@@ -4,3 +4,14 @@ errors.log
 */errors.log
 Hunimal2.token
 mysql.php
+lib/*
+!lib/node_modules
+!lib/node_modules/@ffmpeg/core/dist/
+!lib/node_modules/@ffmpeg/core/dist/ffmpeg-core.js
+!lib/node_modules/recordrtc/RecordRTC.min.js
+!lib/node_modules/video.js/dist/video.min.js
+!lib/node_modules/video.js/dist/video-js.min.css
+!lib/node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js
+!lib/node_modules/videojs-record/dist/videojs.record.min.js
+!lib/node_modules/videojs-record/dist/css/videojs.record.min.css
+!lib/node_modules/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.min.js
