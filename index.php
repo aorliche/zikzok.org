@@ -1,3 +1,6 @@
+<?php
+	require_once($_SERVER['DOCUMENT_ROOT'].'/functions.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,7 +42,7 @@
 		echo '<p>'.$aStart.'<span class="video-name">'.htmlspecialchars($name).'</span></a><br>';
 		echo gmdate('M d, Y, g:ia', $ctime).' GMT</p>';
 		echo $aStart.'<img class="video-preview" width="240" height="160" src="preview/'
-			.htmlspecialchars($fname).'"></a>';
+			.escapeExtra(htmlspecialchars($fname)).'"></a>';
 		echo '</div>';
 	}
 ?>

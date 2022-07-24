@@ -1,3 +1,6 @@
+<?php 
+	require_once($_SERVER['DOCUMENT_ROOT'].'/functions.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +14,7 @@
 	<h1><a href='/'>ZikZok</a></h1>
 	<h3><?= htmlspecialchars($_GET['v']) ?></h3>
 	<video controls playsinline width='320px'>
-		<source src='/videos/<?= htmlspecialchars($_GET['v']) ?>.webm'>
+		<source src='/videos/<?= escapeExtra(htmlspecialchars($_GET['v'])) ?>.webm'>
 	</video>
 </div>
 </body>
