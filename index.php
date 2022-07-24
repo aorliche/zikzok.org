@@ -14,7 +14,7 @@
 <body>
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
-	<a href='record/'>Record a video</a>
+	<div id='navigation'><a href='record/'>Record a video</a> <a href='signup.php'>Sign up</a></div>
 	<h2>Recent Videos</h2>
 	<div id='videos'>
 <?php
@@ -44,8 +44,6 @@
 	}
 ?>
 	</div>
-</div>
-</center>
 </div>
 </body>
 </html>

@@ -4,9 +4,9 @@
 	width: 60%;
 }
 
-h2 {
-	padding-bottom: 0px;
-	margin-bottom: 0px;
+label {
+	width: 150px;
+	display: inline-block;
 }
 
 .video-block {
