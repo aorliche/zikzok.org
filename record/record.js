@@ -39,7 +39,7 @@ window.addEventListener('load', e => {
 		console.log(player.recordedData.size);
 		const nameInput = document.querySelector('#name');
 		const data = new FormData();
-		const name = nameInput.value.replace('/\//g', 'FSLASH').replace('/\\/g', 'BLASH');
+		const name = nameInput.value.replace(/\//g, 'FSLASH').replace(/\\/g, 'BLASH');
 		data.append('recordedData', player.recordedData);
 		data.append('previewImage', previewImg);
 		data.append('name', name);
