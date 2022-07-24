@@ -1,3 +1,4 @@
+'use strict';
 let player, previewImg;
 
 window.addEventListener('load', e => {
