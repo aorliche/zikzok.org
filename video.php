@@ -10,7 +10,7 @@
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
 	<h3><?= htmlspecialchars($_GET['v']) ?></h3>
-	<video controls width='320px'>
+	<video controls playsinline width='320px'>
 		<source src='/videos/<?= htmlspecialchars($_GET['v']) ?>.webm'>
 	</video>
 </div>

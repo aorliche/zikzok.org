@@ -28,7 +28,7 @@
 		<li>Videos are limited to 60s</li>
 	</ul>
 	<p>Name: <input type='text' id='name' value='<?= uniqid(); ?>'></p>
-	<video id='videoElt' playsinline class='video-js vjs-default-skin'></video>
+	<video id='videoElt' controls playsinline class='video-js vjs-default-skin'></video>
 </div>
 </body>
 </html>
