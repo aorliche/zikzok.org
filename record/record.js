@@ -2,6 +2,12 @@ let player, previewImg;
 
 window.addEventListener('load', e => {
 	const info = document.querySelector('#info');
+	const ios = document.querySelector('#iosElt');
+	ios.addEventListener('change', e => {
+		const f = ios.files[0];
+		console.log(f);
+	});
+	return;
 	let options = {
 		// video.js options
 		controls: true,

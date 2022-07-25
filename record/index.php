@@ -36,7 +36,10 @@
 		<li>Videos are limited to 60s</li>
 	</ul>
 	<p>Name: <input type='text' id='name' value='<?= uniqid(); ?>'></p>
+	<input type='file' accept='video/*' capture='user' id='iosElt'>
+	<!--
 	<video id='videoElt' controls playsinline preload='none' class='video-js vjs-default-skin'></video>
+	-->
 	<div id='info'></div>
 </div>
 </body>
