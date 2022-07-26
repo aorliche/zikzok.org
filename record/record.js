@@ -1,3 +1,70 @@
+function getVideoImage(path, secs, callback) {
+  var me = this, video = document.createElement('video');
+  video.onloadedmetadata = function() {
+    if ('function' === typeof secs) {
+      secs = secs(this.duration);
+    }
+    this.currentTime = Math.min(Math.max(0, (secs < 0 ? this.duration : 0) + secs), this.duration);
+  };
+  video.onseeked = function(e) {
+    var canvas = document.createElement('canvas');
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    var img = new Image();
+    img.src = canvas.toDataURL();
+    callback.call(me, img, this.currentTime, e);
+  };
+  video.onerror = function(e) {
+    callback.call(me, undefined, undefined, e);
+  };
+  video.src = path;
+}
+
+function upload(video, img) {
+	const nameInput = document.querySelector('#name');
+	const data = new FormData();
+	const name = nameInput.value.replace(/\//g, 'FSLASH').replace(/\\/g, 'BSLASH');
+	data.append('recordedData', video);
+	data.append('previewImage', img);
+	data.append('name', name);
+	fetch('upload.php', {
+		method: 'POST',
+		body: data
+	})
+	.then(response => response.json())
+	.then(result => {
+		console.log(result);
+		info.innerText = 'Finished converting, video available.';
+	})
+	.catch(error => console.log(error));
+}
+function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    //Old Code
+    //write the ArrayBuffer to a blob, and you're done
+    //var bb = new BlobBuilder();
+    //bb.append(ab);
+    //return bb.getBlob(mimeString);
+
+    //New Code
+    return new Blob([ab], {type: mimeString});
+}
+
 let player, previewImg;
 
 window.addEventListener('load', e => {
@@ -5,9 +72,21 @@ window.addEventListener('load', e => {
 	const ios = document.querySelector('#iosElt');
 	ios.addEventListener('change', e => {
 		const f = ios.files[0];
-		console.log(f);
+		const reader = new FileReader();
+		info.innerText = 'Starting conversion...';
+		reader.addEventListener('load', e => {
+			const video = e.target.result;
+			function cb(img, time, evt) {
+				console.log(time);
+				console.log(evt);
+				console.log(img);
+				const blob = dataURItoBlob(img.src);
+				upload(f, blob);
+			}
+			getVideoImage(video, 0, cb);
+		});
+		reader.readAsDataURL(f);
 	});
-	return;
 	let options = {
 		// video.js options
 		controls: true,
@@ -56,6 +135,8 @@ window.addEventListener('load', e => {
 		console.log('Finished recording');
 		console.log(player.convertedData.name);
 		console.log(player.convertedData.size);
+		upload(player.convertedData, previewImg);
+		/*
 		const nameInput = document.querySelector('#name');
 		const data = new FormData();
 		const name = nameInput.value.replace(/\//g, 'FSLASH').replace(/\\/g, 'BSLASH');
@@ -71,6 +152,6 @@ window.addEventListener('load', e => {
 			console.log(result);
 			info.innerText = 'Finished converting, video available.';
 		})
-		.catch(error => console.log(error));
+		.catch(error => console.log(error));*/
 	});
 });
