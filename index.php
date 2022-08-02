@@ -41,7 +41,7 @@
 		echo '<div class="video-block">';
 		echo '<p>'.$aStart.'<span class="video-name">'.htmlspecialchars($name).'</span></a><br>';
 		echo gmdate('M d, Y, g:ia', $ctime).' GMT</p>';
-		echo $aStart.'<img class="video-preview" width="240" height="160" src="preview/'
+		echo $aStart.'<img class="video-preview" src="preview/'
 			.escapeExtra(htmlspecialchars($fname)).'"></a>';
 		echo '</div>';
 	}
