@@ -83,7 +83,7 @@ window.addEventListener('load', e => {
 				const blob = dataURItoBlob(img.src);
 				upload(f, blob);
 			}
-			getVideoImage(video, 10, cb);
+			getVideoImage(video, 0.1, cb);
 		});
 		reader.readAsDataURL(f);
 	});
