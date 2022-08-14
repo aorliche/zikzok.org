@@ -21,11 +21,12 @@ label {
 .video-block .video-name{
 	font-weight: bold;
 	font-size: 18px;
+    max-width: 220px;
 }
 
 .video-block img {
-	max-width: 240px;
-	max-height: 100px;
+	max-width: 200px;
+	max-height: 120px;
 }
 
 #video-info {
