@@ -31,7 +31,7 @@
     <div class="video-block">
 		<p>
             <a href="video.php?v=<?= $row['uniqid'] ?>"><span class="video-name"><?= htmlspecialchars($name) ?></span></a><br>
-		    <?= $row['created'] ?> GMT
+		    <?= $row['created'] ?>
         </p>
 		<a href="video.php?v=<?= $row['uniqid'] ?>">
             <img class="video-preview" alt="<?= $row['uniqid'] ?>" src="preview/<?= $row['uniqid'] ?>.png">
