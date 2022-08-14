@@ -17,6 +17,7 @@ label {
     vertical-align: top;
     max-width: 220px;
     text-align: center;
+    overflow: hidden;
 }
 
 .video-block .video-name{
