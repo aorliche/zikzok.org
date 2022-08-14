@@ -1,4 +1,4 @@
-<?
+<?php
     include_once('mysql.php');
    
     if ($_GET['v']) {
@@ -11,7 +11,15 @@
         $preview = '/preview/'.$row['uniqid'].'.png';
         $name = $row['name'];
         $user = $row['userid'];
+        $views = $row['views'];
+        $likes = $row['likes'];
         if (!$user) $user = 'Anonymous';
+
+        $stmt = $mysqli->prepare('update videos set views = views + 1 where id = ?');
+        $stmt->bind_param('i', $row['id']);
+        $stmt->execute();
+
+        $views = $views+1;
     }
 ?>
 <!DOCTYPE html>
@@ -25,23 +33,31 @@
 <link href="https://vjs.zencdn.net/7.20.1/video-js.css" rel="stylesheet" />
 <!-- zikzok -->
 <link rel='stylesheet' href='/css/zikzok.css'>
+<link rel='stylesheet' href='/css/video.css'>
 <script src='/js/video.js'></script>
 </head>
 <body>
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
-	<h3 id='video-title'><?= htmlspecialchars($name)  ?></h3>
-    <div id='video-info'>
+	<div>
+        <span id='video-title'>
+        <?= htmlspecialchars($name)  ?></span><br>
         By: <?= $user ?>
     </div>
+    <?php include('predict.php'); ?>
     <div id='video-stats'>
-        Views: <span id='views'>0</span>
-        Likes: <span id='likes'>0</span>
-        <a href='#' id='like'><img src='/images/like.gif' style='margin-left: 10px; vertical-align: bottom;' height='24px'></a>
+        Views: <span id='views'><?= $views ?></span>
+        Likes: <span id='likes'><?= $likes ?></span><br>
+        <div style='display: inline-block; margin-top: 7px;'>
+            <video id='videoElt' class='video-js' controls playsinline>
+                <source src='<?= $video ?>'>
+            </video>
+        </div>
+        <div style='vertical-align: top; display: inline-block; position: relative;'>
+            <a href='#' id='like' style='position: absolute; top: -22px; left: -48px;'>Like it<img src='/images/like.gif' height='48px'></a>
+        </div>
     </div>
-	<video id='videoElt' class='video-js' controls playsinline>
-		<source src='<?= $video ?>'>
-	</video>
+    <span id='pred-span'></span>
 </div>
 </body>
 </html>
