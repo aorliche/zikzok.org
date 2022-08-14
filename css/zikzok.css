@@ -16,12 +16,12 @@ label {
 	margin-bottom: 10px;
     height: 200px;
     vertical-align: top;
+    max-width: 220px;
 }
 
 .video-block .video-name{
 	font-weight: bold;
 	font-size: 18px;
-    max-width: 220px;
 }
 
 .video-block img {
