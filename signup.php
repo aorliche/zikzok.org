@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" href="/images/icon.png">
 <!-- zikzok -->
 <link rel='stylesheet' href='zikzok.css'>
-<script src='zikzok.js'></script>
+<script src='signup.js'></script>
 </head>
 <body>
 <div id='container'>
@@ -15,9 +15,10 @@
 	<form action='finish.php'>
 	<label for='email'>Email:</label><input type='text' name='email' id='email'><br>
 	<label for='username'>Name:</label><input type='text' name='username' id='username'><br>
-	<label for='password'>Password:</label><input type='text' name='username' id='password'><br>
-	<label for='confirm'>Confirm Password:</label><input type='text' name='username' id='confirm'><br>
-	<button>Submit</button>
+	<label for='password'>Password:</label><input type='password' name='username' id='password'><br>
+	<label for='confirm'>Confirm Password:</label><input type='password' name='username' id='confirm'><br>
+	<div id='infoDiv'></div>
+	<button id='button'>Submit</button>
 	</form>
 </div>
 </body>

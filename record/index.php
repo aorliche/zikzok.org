@@ -1,6 +1,13 @@
 <?php
 	header('Cross-Origin-Embedder-Policy: require-corp');
 	header('Cross-Origin-Opener-Policy: same-origin');
+
+    $iPod    = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
+    $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
+    $iPad    = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
+    $Android = stripos($_SERVER['HTTP_USER_AGENT'],"Android");
+    $webOS   = stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +29,7 @@
 <script src="/lib/node_modules/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.min.js"></script>
 <!-- zikzok -->
 <script type='module' src='record.js'></script>
-<link rel='stylesheet' href='/zikzok.css'>
+<link rel='stylesheet' href='/css/zikzok.css'>
 </head>
 <body>
 <div id='container'>
@@ -35,11 +42,18 @@
 		<li>Click the square to stop and upload</li>
 		<li>Videos are limited to 60s</li>
 	</ul>
-	<p>Name: <input type='text' id='name' value='<?= uniqid(); ?>'></p>
-	<input type='file' accept='video/*' capture='user' id='iosElt'>
-	<!--
+	<p>Name: <input type='text' id='name' value=''></p>
+<?php
+    if ($iPod || $iPhone || $iPad) {
+?>
+	<input type='file' accept='video/mp4' capture='user' id='iosElt'>
+<?php
+    } else {
+?>
 	<video id='videoElt' controls playsinline preload='none' class='video-js vjs-default-skin'></video>
-	-->
+<?php
+    }
+?>
 	<div id='info'></div>
 </div>
 </body>
