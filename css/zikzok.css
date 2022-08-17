@@ -29,3 +29,9 @@ label {
 	max-width: 200px;
 	max-height: 120px;
 }
+
+.reply-thumb {
+    max-width: 120px;
+    max-height: 80px;
+    vertical-align: bottom;
+}

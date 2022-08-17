@@ -2,8 +2,8 @@
 <?php include('css/predict.css'); ?>
 </style>
 <div id='pred'>
-    <div style='text-align: center; margin-bottom: 20px; font-size: 16px; font-weight: bold;'>Predict this video's worthiness!</div>
-    <div style='margin-left: 10px;'>How many views/likes will it receive?</div>
+    <!--<div style='text-align: center; margin-bottom: 20px; font-size: 16px; font-weight: bold;'>Predict future worthiness</div>-->
+    <div style='margin-left: 10px;'>How many views/likes will your video receive?<br>You will record after prediction</div>
     <div id='pred-views'>
         <div style='width: 50px; display: inline-block;'>Views:</div>
 <?php
@@ -26,3 +26,4 @@
         <button id='pred-submit'>Submit</button>
     </div>
 </div>
+<p id='pred-info'></p>

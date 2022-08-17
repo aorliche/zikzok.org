@@ -29,6 +29,9 @@ function upload(video, img) {
 	data.append('recordedData', video);
 	data.append('previewImage', img);
 	data.append('name', name);
+    data.append('predLikes', selLikes.innerText);
+    data.append('predViews', selViews.innerText);
+    data.append('replyto', nameInput.dataset.replyto);
 	fetch('upload.php', {
 		method: 'POST',
 		body: data

@@ -1,6 +1,6 @@
 #pred {
     display: inline-block;
-    margin-left: 80px;
+    margin-top: 20px;
 }
 
 #pred-views, #pred-likes {
@@ -30,4 +30,8 @@
 #pred-likes .pred-button:hover, #pred-views .pred-button:hover, #pred .selected {
     background-color: #ff9;
     cursor: pointer;
+}
+
+#post-pred {
+    display: none;
 }

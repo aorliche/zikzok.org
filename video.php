@@ -20,6 +20,22 @@
         $stmt->execute();
 
         $views = $views+1;
+
+        // Is this a reply?
+        $stmt = $mysqli->prepare('select oldvideo, name from replies
+                            inner join videos on videos.uniqid = replies.oldvideo
+                            where replies.newvideo = ?');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $this_reply_res = $stmt->get_result();
+    
+        // Get replies
+        $stmt = $mysqli->prepare('select newvideo, name, created from replies 
+                            inner join videos on videos.uniqid = replies.newvideo 
+                            where replies.oldvideo = ?');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $replies_res = $stmt->get_result();
     }
 ?>
 <!DOCTYPE html>
@@ -39,12 +55,19 @@
 <body>
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
-	<div>
+<?php
+    if ($this_reply_res->num_rows) {
+        $row = $this_reply_res->fetch_assoc();
+        $olduniqid = $row['oldvideo'];
+        $oldname = $row['name'];
+        echo "<p>This is a reply to video <a href='/video.php?v=$olduniqid'>$oldname<img class='reply-thumb' src='/preview/$olduniqid.png'></a></p>";
+    }
+?>
+	<p>
         <span id='video-title'>
         <?= htmlspecialchars($name)  ?></span><br>
         By: <?= $user ?>
-    </div>
-    <?php include('predict.php'); ?>
+    </p>
     <div id='video-stats'>
         Views: <span id='views'><?= $views ?></span>
         Likes: <span id='likes'><?= $likes ?></span><br>
@@ -54,10 +77,35 @@
             </video>
         </div>
         <div style='vertical-align: top; display: inline-block; position: relative;'>
-            <a href='#' id='like' style='position: absolute; top: -22px; left: -48px;'>Like it<img src='/images/like.gif' height='48px'></a>
+            <div style='position: absolute; top: -39px; left: -145px; width: 145px;'>
+                <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
+                <a href='#' id='like'>
+                    Like it
+                    <img src='/images/like.gif' height='32px'>
+                </a>
+            </div>
         </div>
     </div>
-    <span id='pred-span'></span>
+    <div id='replies'>
+<?php
+    if ($replies_res->num_rows) {
+        $n = $replies_res->num_rows;
+        echo "Replies: ($n)<br>";
+        echo "<ol>";
+    }
+    while ($row = $replies_res->fetch_assoc()) {
+        $name = $row['name'];
+        $uniqid = $row['newvideo'];
+        $created = $row['created'];
+        echo "<li><div style='display: inline-block;'>
+            <a href='/video.php?v=$uniqid'>$name</a><br>$created</div> 
+            <a href='/video.php?v=$uniqid'><img class='reply-thumb' src='/preview/$uniqid.png'></a></li>";
+    }
+    if ($replies_res->num_rows) {
+        echo "</ol>";
+    }
+?>
+    </div>
 </div>
 </body>
 </html>

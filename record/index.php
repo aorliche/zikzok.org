@@ -1,4 +1,6 @@
 <?php
+    include('../mysql.php');
+
 	header('Cross-Origin-Embedder-Policy: require-corp');
 	header('Cross-Origin-Opener-Policy: same-origin');
 
@@ -7,7 +9,6 @@
     $iPad    = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
     $Android = stripos($_SERVER['HTTP_USER_AGENT'],"Android");
     $webOS   = stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,13 +29,36 @@
 <!-- ffmpeg.wasm -->
 <script src="/lib/node_modules/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.min.js"></script>
 <!-- zikzok -->
+<script src='/js/predict.js'></script>
 <script type='module' src='record.js'></script>
 <link rel='stylesheet' href='/css/zikzok.css'>
+<link rel='stylesheet' href='/css/record.css'>
 </head>
 <body>
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
 	<h2>Record a Video</h2>
+<?php
+    $uniqid = $_GET['replyto'];
+    $name = '';
+
+    if ($uniqid) {
+        $stmt = $mysqli->prepare('select * from videos where uniqid = ?');
+        $stmt->bind_param('s', $uniqid);
+        $stmt->execute();
+        $res = $stmt->get_result();
+       
+        $row = $res->fetch_assoc();
+        if ($row) {
+            $name = $row['name'];
+            echo "<p>You are replying to a video <a href='/video.php?v=$uniqid'>$name<img class='reply-thumb' src='/preview/$uniqid.png'></a></p>";
+            $name = "RE: $name";
+        }
+    }
+?>
+	<p>Name: <input type='text' id='name' value='<?= $name ?>' data-replyto='<?= $uniqid ?>'></p>
+    <?php include('../predict.php'); ?>
+    <div id='post-pred'>
 	<ul>
 		<li>Click the camera</li>
 		<li>Allow browser permissions</li>
@@ -42,7 +66,6 @@
 		<li>Click the square to stop and upload</li>
 		<li>Videos are limited to 60s</li>
 	</ul>
-	<p>Name: <input type='text' id='name' value=''></p>
 <?php
     if ($iPod || $iPhone || $iPad) {
 ?>
@@ -55,6 +78,7 @@
     }
 ?>
 	<div id='info'></div>
+    </div>
 </div>
 </body>
 </html>
