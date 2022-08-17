@@ -40,7 +40,7 @@
             <a href="video.php?v=<?= $uniqid ?>"><span class="video-name"><?= htmlspecialchars($name) ?></span></a>
 <?php
     if ($nreplies) {
-        echo "($nreplies replies)";
+        echo "<br>($nreplies replies)";
     }
 ?>
             <br>
