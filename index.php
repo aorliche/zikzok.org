@@ -1,7 +1,11 @@
 <?php
     include_once('mysql.php');
 
-    $stmt = $mysqli->prepare('select * from videos where uniqid is not NULL order by created desc');
+    $stmt = $mysqli->prepare('select uniqid,name,created,count(newvideo) as nreplies from videos 
+        left join replies on videos.uniqid = replies.oldvideo 
+        where uniqid is not null 
+        group by uniqid 
+        order by created desc');
     $stmt->execute();
     $res = $stmt->get_result();
 ?>
@@ -27,14 +31,23 @@
 <?php
     while ($row = $res->fetch_assoc()) {
         $name = $row['name'];
+        $uniqid = $row['uniqid'];
+        $created = $row['created'];
+        $nreplies = $row['nreplies'];
 ?>
     <div class="video-block">
 		<p>
-            <a href="video.php?v=<?= $row['uniqid'] ?>"><span class="video-name"><?= htmlspecialchars($name) ?></span></a><br>
-		    <?= $row['created'] ?>
+            <a href="video.php?v=<?= $uniqid ?>"><span class="video-name"><?= htmlspecialchars($name) ?></span></a>
+<?php
+    if ($nreplies) {
+        echo "($nreplies replies)";
+    }
+?>
+            <br>
+		    <?= $created ?>
         </p>
-		<a href="video.php?v=<?= $row['uniqid'] ?>">
-            <img class="video-preview" alt="<?= $row['uniqid'] ?>" src="preview/<?= $row['uniqid'] ?>.png">
+		<a href="video.php?v=<?= $uniqid ?>">
+            <img class="video-preview" alt="<?= $uniqid ?>" src="preview/<?= $uniqid ?>.png">
         </a>
 	</div>
 <?php
