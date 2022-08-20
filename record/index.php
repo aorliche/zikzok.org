@@ -67,7 +67,7 @@
 		<li>Videos are limited to 60s</li>
 	</ul>
 <?php
-    if ($iPod || $iPhone || $iPad) {
+    if ($iPod || $iPhone || $iPad || true) {
 ?>
 	<input type='file' accept='video/mp4' capture='user' id='iosElt'>
 <?php
