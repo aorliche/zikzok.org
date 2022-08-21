@@ -1,3 +1,11 @@
+@font-face {
+	font-family: "HunimalSansv1.5";
+	src: url('/font/HunimalSansv1.5.ttf');
+}
+
+.hunimal-font {
+	font-family: "HunimalSansv1.5";
+}
 
 #container {
 	margin: 0 auto;

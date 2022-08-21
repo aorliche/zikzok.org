@@ -71,7 +71,8 @@ window.addEventListener('load', e => {
         $('#end-time').value = d.dataset.end;
     }
 
-    function addDragableListener(d) {
+    // Listeners for all text/hunimal overlay elements
+    function addDraggableListener(d) {
         d.addEventListener('mousedown', e => {
             console.log('down');
             e.stopPropagation();
@@ -96,18 +97,48 @@ window.addEventListener('load', e => {
         });
     }
 
+    // Add listeners to texts already saved in the db for the video
+    [...$$('.draggable')].forEach(d => addDraggableListener(d));
+
+    // And update the list
+    updateTexts(); 
+
+    // This is an existing text and we want to delete it from the db
+    function removeFromDB(d) {
+        fetch(`/text-remove.php?id=${d.dataset.id}`)
+        .then(resp => resp.text())
+        .then(text => {
+            if (text != 'Success') console.log(text);
+        })
+        .catch(err => console.log(err));
+    }
+
     function updateTexts() {
         $('#texts').innerHTML = '';
         $$('#video-overlay .draggable').forEach(d => {
             const li = document.createElement('li');
             const a = document.createElement('a');
+            const aRemove = document.createElement('a');
             a.innerText = d.innerText;
             a.href = '#';
             a.addEventListener('click', e => {
                 e.preventDefault();
-                d.click();
+                d.dispatchEvent(new Event('mousedown'));
             });
+            aRemove.innerText = "Remove";
+            aRemove.href = '#';
+            aRemove.addEventListener('click', e => {
+                e.preventDefault();
+                if (d == selected) selected = null;
+                d.parentNode.removeChild(d);
+                updateTexts();
+                if (d.dataset.id) {
+                    removeFromDB(d);
+                }
+            });
+            aRemove.style.paddingLeft = '5px';
             li.appendChild(a);
+            li.appendChild(aRemove);
             $('#texts').appendChild(li);
         });
     }
@@ -200,6 +231,7 @@ window.addEventListener('load', e => {
         });
     });
 
+    // Add a new piece of draggable text to be displayed
     $('#add-text').addEventListener('click', e => {
         e.preventDefault();
         if (!$('#display-overlay').checked) {
@@ -212,11 +244,12 @@ window.addEventListener('load', e => {
         d.style.top = Math.floor(r.height/2) + 'px';
         d.style.left = Math.floor(100*Math.random()) + 'px';
         d.classList.add('draggable');
+        d.classList.add('hunimal-font');
         d.classList.add('selected');
         d.contentEditable = 'true';
         d.dataset.start = 0;
         d.dataset.end = 100;
-        addDragableListener(d);
+        addDraggableListener(d);
         if (selected) selected.classList.remove('selected');
         selected = d;
         over.appendChild(d);
@@ -257,5 +290,87 @@ window.addEventListener('load', e => {
         $('#editor').style.visibility = 'hidden';
         $('#display-overlay').checked = false;
         $('#display-overlay').dispatchEvent(new Event('change'));
+    });
+
+    // Placing hunimal digits
+    $('#hunimal-container').addEventListener('mouseover', e => {
+        $('#hunimal-select').style.display = 'table';
+    });
+    
+    $('#hunimal-container').addEventListener('mouseout', e => {
+        $('#hunimal-select').style.display = 'none';
+    });
+    
+    $('#hunimal-select').addEventListener('mouseout', e => {
+        $('#hunimal-select').style.display = 'none';
+    });
+
+    let rememberedOffset = null;
+
+    [...$$('#hunimal-select td')].forEach(td => {
+        td.addEventListener('click', e => {
+            const sel = getSelection();
+            let off = null;
+            if (sel && sel.focusNode instanceof Text && sel.focusNode.parentNode == selected) {
+                off = sel.anchorOffset;
+            } else if (selected && rememberedOffset) {
+                off = rememberedOffset;
+            } else {
+                $('#add-text').dispatchEvent(new Event('click'));
+                selected.innerText = '';
+                off = 0;
+            }
+            if (off || off === 0) {
+                const before = selected.innerText.substr(0,off);
+                const after = selected.innerText.substr(off);
+                selected.innerText = before + td.innerText + after;
+                updateTexts();
+                rememberedOffset = off+1;
+            }
+        });
+    });
+
+    // Push to database
+    $('#save-all').addEventListener('click', e => {
+        e.preventDefault();
+        const orig = [...$$('.draggable')];
+        const draggables = orig.map(d => {
+            const style = getComputedStyle(d);
+            const [r,g,b] = [...style.color.matchAll(/\d+/g)].map(part => parseInt(part));
+            return {
+                id: d.dataset.id ?? null,
+                uniqid: new URL(document.location).searchParams.get('v'),
+                text: d.innerText,
+                top: parseInt(d.style.top),
+                left: parseInt(d.style.left),
+                red: r,
+                green: g,
+                blue: b,
+                size: parseInt(style.fontSize),
+                start: parseInt(d.dataset.start),
+                end: parseInt(d.dataset.end)
+            };
+        });
+        fetch('/text-save.php', {
+            method: 'post', 
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(draggables)
+        })
+        .then(resp => resp.json())
+        .then(json => {
+            if (json.error) {
+                console.log(json.error);
+                return;
+            }
+            for (let i=0; i<draggables.length; i++) {
+                if (!draggables[i].id) {
+                    orig[i].dataset.id = json[i].id;
+                }
+            }
+        })
+        .catch(err => console.log(err));
     });
 });

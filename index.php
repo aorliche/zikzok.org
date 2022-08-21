@@ -32,12 +32,12 @@
 
     foreach ($all as $row) {
         $keep = true;
-        foreach ($top as $toprow) {
+        /*foreach ($top as $toprow) {
             if ($toprow['uniqid'] == $row['uniqid']) {
                 $keep = false;
                 break;
             }
-        }
+        }*/
         if ($keep) array_push($rest, $row);
     }
     

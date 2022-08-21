@@ -36,6 +36,12 @@
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $replies_res = $stmt->get_result();
+
+        // Load existing overlays
+        $stmt = $mysqli->prepare('select * from texts where uniqid = ? and deleted = false');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $texts_res = $stmt->get_result();
     }
 ?>
 <!DOCTYPE html>
@@ -76,7 +82,30 @@
         <a href='#open-editor' id='open-editor'>Open editor</a>
         <br>
         <div style='display: inline-block; margin-top: 7px; position: relative;'>
-            <div id='video-overlay'></div>
+            <div id='video-overlay'>
+<?php
+    if ($texts_res->num_rows) {
+        foreach ($texts_res as $d) {
+            $id = $d['id'];
+            $text = $d['text'];
+            $top = $d['top'];
+            $left = $d['left'];
+            $r = $d['red'];
+            $g = $d['green'];
+            $b = $d['blue'];
+            $rgb = "rgb($r,$g,$b)";
+            $size = $d['size'];
+            $start = $d['start'];
+            $end = $d['end'];
+            echo <<<EOT
+            <div class='draggable hunimal-font' 
+                style='top: ${top}px; left: ${left}px; color: $rgb; font-size: ${size}px;' 
+                data-start='$start' data-end='$end' data-id='$id'>$text</div>;
+            EOT;
+        }
+    }
+?>
+            </div>
             <video id='video-elt' class='video-js' controls playsinline>
                 <source src='<?= $video ?>'>
             </video>
@@ -106,8 +135,12 @@
         <input type='checkbox' id='display-overlay'>
             <span id='overlay-feedback1'>Editing (video play disabled)</span>
             <span id='overlay-feedback2'>Video controls enabled (not editing)</span><br>
-        <button id='add-text'>Add text</button><br>
-        <small>Click on text, use arrow keys and keyboard to edit</small><br>
+        <button id='add-text'>Add text</button>
+        <button id='delete-text'>Delete text</button>
+        <button id='save-all'>Save all</button><br>
+        <small>Click on text, then use mouse, arrow keys, and keyboard to edit</small><br>
+        <small>Remember to save</small><br>
+<?php include('hunimal-select.php'); ?>
         <label for='text-font-size'>Font size:</label> <input type='range' id='text-font-size' min='8' max='80' step='8' value='24'><br>
         Color<br>
         <label for='text-font-red'>Red:</label> <input type='range' id='text-font-red' min='0' max='255' step='15' value='255'><br>
@@ -116,9 +149,8 @@
         Timing<br>
         <label for='start-time'>Start:</label> <input type='range' id='start-time' min='0' max='100' step='1' value='0'><br>
         <label for='end-time'>End:</label> <input type='range' id='end-time' min='0' max='100' step='1' value='100'><br>
-        <button id='delete-text'>Delete text</button><br>
         <a href='#close-editor' id='close-editor'>Close editor</a><br>
-        <ol id='texts'></ol>
+        <ol id='texts' class='hunimal-font'></ol>
     </div>
 </div>
 </body>
