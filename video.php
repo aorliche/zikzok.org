@@ -103,7 +103,7 @@
         </div>
     </div>
     <div id='editor'>
-        <input type='checkbox' id='display-overlay' checked>
+        <input type='checkbox' id='display-overlay'>
             <span id='overlay-feedback1'>Editing (video play disabled)</span>
             <span id='overlay-feedback2'>Video controls enabled (not editing)</span><br>
         <button id='add-text'>Add text</button><br>
