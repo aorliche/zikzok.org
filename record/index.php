@@ -4,11 +4,11 @@
 	header('Cross-Origin-Embedder-Policy: require-corp');
 	header('Cross-Origin-Opener-Policy: same-origin');
 
-    $iPod    = stripos($_SERVER['HTTP_USER_AGENT'],"iPod");
-    $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
-    $iPad    = stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
-    $Android = stripos($_SERVER['HTTP_USER_AGENT'],"Android");
-    $webOS   = stripos($_SERVER['HTTP_USER_AGENT'],"webOS");
+    $iPod    = stristr($_SERVER['HTTP_USER_AGENT'],"iPod");
+    $iPhone  = stristr($_SERVER['HTTP_USER_AGENT'],"iPhone");
+    $iPad    = stristr($_SERVER['HTTP_USER_AGENT'],"iPad");
+    $Android = stristr($_SERVER['HTTP_USER_AGENT'],"Android");
+    $webOS   = stristr($_SERVER['HTTP_USER_AGENT'],"webOS");
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,20 +59,28 @@
 	<p>Name: <input type='text' id='name' value='<?= $name ?>' data-replyto='<?= $uniqid ?>'></p>
     <?php include('../predict.php'); ?>
     <div id='post-pred'>
+<?php
+    if ($iPod || $iPhone || $iPad || $Android || $webOS || $_GET['alt']) {
+?>
 	<ul>
-		<li>Click the camera</li>
-		<li>Allow browser permissions</li>
-		<li>Click the circle to record</li>
-		<li>Click the square to stop and upload</li>
+		<li>Click the record button</li>
+		<li>Record your video</li>
+		<li>Wait for your video to upload</li>
 		<li>Videos are limited to 60s</li>
 	</ul>
-<?php
-    if ($iPod || $iPhone || $iPad || true) {
-?>
-	<input type='file' accept='video/mp4' capture='user' id='iosElt'>
+    <label for='mobile-elt' id='styled-mobile-elt'>Record Video</label>
+	<input type='file' accept='video/mp4' capture='user' id='mobile-elt'>
 <?php
     } else {
 ?>
+	<ul>
+		<li>Click the camera</li>
+		<li>Allow browser permissions</li>
+		<li>Record your video</li>
+        <li>Wait for the video to convert and upload</li>
+		<li>Videos are limited to 60s</li>
+	</ul>
+    <p><strong>If you're having trouble, <a href='/record/index.php?alt=true'>switch to the alternate view</a></strong></p>
 	<video id='videoElt' controls playsinline preload='none' class='video-js vjs-default-skin'></video>
 <?php
     }

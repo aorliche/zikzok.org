@@ -68,25 +68,20 @@
         <?= htmlspecialchars($name)  ?></span><br>
         By: <?= $user ?>
     </p>
-    <div id='video-stats'>
+    <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
-        Likes: <span id='likes'><?= $likes ?></span><br>
-        <div style='display: inline-block; margin-top: 7px;'>
-            <video id='videoElt' class='video-js' controls playsinline>
+        Likes: <span id='likes'><?= $likes ?></span>
+        <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
+        <a href='#like' id='like'>Like it<img src='/images/like.gif' height='32px'></a>
+        <a href='#open-editor' id='open-editor'>Open editor</a>
+        <br>
+        <div style='display: inline-block; margin-top: 7px; position: relative;'>
+            <div id='video-overlay'></div>
+            <video id='video-elt' class='video-js' controls playsinline>
                 <source src='<?= $video ?>'>
             </video>
         </div>
-        <div style='vertical-align: top; display: inline-block; position: relative;'>
-            <div style='position: absolute; top: -39px; left: -145px; width: 145px;'>
-                <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
-                <a href='#' id='like'>
-                    Like it
-                    <img src='/images/like.gif' height='32px'>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div id='replies'>
+        <div id='replies'>
 <?php
     if ($replies_res->num_rows) {
         $n = $replies_res->num_rows;
@@ -105,6 +100,24 @@
         echo "</ol>";
     }
 ?>
+        </div>
+    </div>
+    <div id='editor'>
+        <input type='checkbox' id='display-overlay' checked>
+            <span id='overlay-feedback1'>Editing (video play disabled)</span>
+            <span id='overlay-feedback2'>Video controls enabled (not editing)</span><br>
+        <button id='add-text'>Add text</button><br>
+        <label for='text-font-size'>Font size:</label> <input type='range' id='text-font-size' min='8' max='80' step='8' value='24'><br>
+        Color<br>
+        <label for='text-font-red'>Red:</label> <input type='range' id='text-font-red' min='0' max='255' step='15' value='255'><br>
+        <label for='text-font-green'>Green:</label> <input type='range' id='text-font-green' min='0' max='255' step='15' value='45'><br>
+        <label for='text-font-blue'>Blue:</label> <input type='range' id='text-font-blue' min='0' max='255' step='15' value='45'><br>
+        Timing<br>
+        <label for='start-time'>Start:</label> <input type='range' id='start-time' min='0' max='100' step='1' value='0'><br>
+        <label for='end-time'>End:</label> <input type='range' id='end-time' min='0' max='100' step='1' value='100'><br>
+        <button id='delete-text'>Delete text</button><br>
+        <a href='#close-editor' id='close-editor'>Close editor</a><br>
+        <ol id='texts'></ol>
     </div>
 </div>
 </body>

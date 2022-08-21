@@ -67,7 +67,7 @@ let player, previewImg;
 
 window.addEventListener('load', e => {
 	const info = document.querySelector('#info');
-    const ios = document.querySelector('#iosElt');
+    const mobileElt = document.querySelector('#mobile-elt');
     const nameInput = document.querySelector('#name');
     const reader = new FileReader();
     let vf = null;
@@ -82,15 +82,15 @@ window.addEventListener('load', e => {
         }
         getVideoImage(video, 0.1, cb);
     });
-    if (ios) {
-        ios.addEventListener('click', e => {
+    if (mobileElt) {
+        mobileElt.addEventListener('click', e => {
             if (nameInput.value.length == 0) {
                 alert('Enter a video name');
                 e.preventDefault();
             }
         });
-        ios.addEventListener('change', e => {
-            vf = ios.files[0];
+        mobileElt.addEventListener('change', e => {
+            vf = mobileElt.files[0];
             info.innerText = 'Starting conversion...';
             reader.readAsDataURL(vf);
         });

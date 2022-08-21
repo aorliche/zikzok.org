@@ -5,11 +5,6 @@
 	width: 60%;
 }
 
-label {
-	width: 150px;
-	display: inline-block;
-}
-
 .video-block {
 	display: inline-block;
 	margin-right: 10px;

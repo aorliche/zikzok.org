@@ -1,8 +1,54 @@
-#video-stats {
+#video-main {
     margin-bottom: 10px;
+    display: inline-block;
+}
+
+#video-overlay {
+    position: absolute;
+    top: 0px; 
+    left: 0px; 
+    z-index: 10; 
+    width: 100%; 
+    height: 100%;
+}
+
+#editor {
+    display: inline-block;
+    width: 300px;
+    vertical-align: top;
+    margin-left: 10px;
+    visibility: hidden;
+}
+
+#editor input[type='text'] {
+    width: 50px;
 }
 
 #video-title {
     font-size: 20px;
     font-weight: bold;
+}
+
+.draggable {
+    display: inline-block;
+    position: absolute;
+    user-select: none;
+    cursor: pointer;
+    color: rgb(255,45,45);
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+#overlay-feedback2 {
+    display: none;
+}
+
+label {
+    width: 80px;
+    display: inline-block;
+}
+
+.selected {
+    border: 2px solid red;
 }
