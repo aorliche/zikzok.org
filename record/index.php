@@ -86,6 +86,7 @@
     }
 ?>
 	<div id='info'></div>
+    <div id='more-info'></div>
     </div>
 </div>
 </body>

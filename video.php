@@ -107,6 +107,7 @@
             <span id='overlay-feedback1'>Editing (video play disabled)</span>
             <span id='overlay-feedback2'>Video controls enabled (not editing)</span><br>
         <button id='add-text'>Add text</button><br>
+        <small>Click on text, use arrow keys and keyboard to edit</small><br>
         <label for='text-font-size'>Font size:</label> <input type='range' id='text-font-size' min='8' max='80' step='8' value='24'><br>
         Color<br>
         <label for='text-font-red'>Red:</label> <input type='range' id='text-font-red' min='0' max='255' step='15' value='255'><br>

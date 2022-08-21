@@ -67,6 +67,7 @@ let player, previewImg;
 
 window.addEventListener('load', e => {
 	const info = document.querySelector('#info');
+	const moreInfo = document.querySelector('#more-info');
     const mobileElt = document.querySelector('#mobile-elt');
     const nameInput = document.querySelector('#name');
     const reader = new FileReader();
