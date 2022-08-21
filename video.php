@@ -13,6 +13,7 @@
         $user = $row['userid'];
         $views = $row['views'];
         $likes = $row['likes'];
+        $created = $row['created'];
         if (!$user) $user = 'Anonymous';
 
         $stmt = $mysqli->prepare('update videos set views = views + 1 where id = ?');
@@ -72,7 +73,7 @@
 	<p>
         <span id='video-title'>
         <?= htmlspecialchars($name)  ?></span><br>
-        By: <?= $user ?>
+        By: <?= $user ?> Created: <?= $created ?>
     </p>
     <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
