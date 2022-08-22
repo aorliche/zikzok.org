@@ -367,7 +367,7 @@ window.addEventListener('load', e => {
             }
             for (let i=0; i<draggables.length; i++) {
                 if (!draggables[i].id) {
-                    orig[i].dataset.id = json[i].id;
+                    orig[i].dataset.id = json[i];
                 }
             }
         })
