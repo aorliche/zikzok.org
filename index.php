@@ -4,7 +4,7 @@
     $NTOP = 5;
     $NRECENT = 20;
 
-    $stmt = $mysqli->prepare('select uniqid,name,created,unix_timestamp(created) as created_unix,count(newvideo) as nreplies from videos 
+    $stmt = $mysqli->prepare('select uniqid,name,likes,created,unix_timestamp(created) as created_unix,count(newvideo) as nreplies from videos 
         left join replies on videos.uniqid = replies.oldvideo 
         where uniqid is not null 
         group by uniqid 
@@ -49,14 +49,19 @@
         $name = htmlspecialchars($row['name']);
         $uniqid = htmlspecialchars($row['uniqid']);
         $created = htmlspecialchars($row['created']);
+        $likes = htmlspecialchars($row['likes']);
         $nreplies = $row['nreplies'];
         echo <<<EOT
     <div class="video-block">
 		<p>
             <a href="video.php?v=$uniqid"><span class="video-name">$name</span></a>
 EOT;
-        if ($nreplies) {
+        if ($nreplies && $likes) {
+            echo "<br>($nreplies replies, $likes likes)";
+        } else if ($nreplies) {
             echo "<br>($nreplies replies)";
+        } else if ($likes) {
+            echo "<br>($likes likes)";
         }
         echo <<<EOT
             <br>
