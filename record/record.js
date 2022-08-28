@@ -36,10 +36,11 @@ function upload(video, img) {
 		method: 'POST',
 		body: data
 	})
-	.then(response => response.text())
-	.then(result => {
-		console.log(result);
+	.then(response => response.json())
+	.then(json => {
+		console.log(json);
 		info.innerText = 'Finished converting, video available.';
+        window.location.href = `/video.php?v=${json['uniqid']}`;
 	})
 	.catch(error => console.log(error));
 }
