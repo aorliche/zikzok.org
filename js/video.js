@@ -1,5 +1,5 @@
-const $ = e => document.querySelector(e);
-const $$ = e => document.querySelectorAll(e);
+var $ = e => document.querySelector(e);
+var $$ = e => document.querySelectorAll(e);
 
 window.addEventListener('load', e => {
 	/*let options = {
@@ -73,9 +73,7 @@ window.addEventListener('load', e => {
 
     // Listeners for all text/hunimal overlay elements
     function addDraggableListener(d) {
-        d.addEventListener('mousedown', e => {
-            console.log('down');
-            e.stopPropagation();
+        function downOrTouchStart(clientX, clientY) {
             if (!$('#display-overlay').checked) {
                 return;
             }
@@ -85,14 +83,23 @@ window.addEventListener('load', e => {
             });
             const rv = $('#video-overlay').getBoundingClientRect();
             const r = d.getBoundingClientRect();
-            e.target.dragging = true;
-            e.target.dx = r.left - e.clientX - rv.left;
-            e.target.dy = r.top - e.clientY - rv.top;
+            d.dragging = true;
+            d.dx = r.left - clientX - rv.left;
+            d.dy = r.top - clientY - rv.top;
             selected = d;
             d.classList.add('selected');
             updateControls(d);
+        }
+        d.addEventListener('mousedown', e => {
+            e.stopPropagation();
+            downOrTouchStart(e.clientX, e.clientY);
+        });
+        d.addEventListener('touchstart', e => {
+            e.stopPropagation();
+            downOrTouchStart(e.touches[0].clientX, e.touches[0].clientY);
         });
         d.addEventListener('keyup', e => {
+            e.stopPropagation();
             updateTexts();
         });
     }
@@ -143,16 +150,17 @@ window.addEventListener('load', e => {
         });
     }
 
-    $('#video-overlay').addEventListener('mousemove', e => {
+    function moveOrTouchMove(clientX, clientY) {
         if (!$('#display-overlay').checked) {
             return;
         }
         const d = [...$$('.draggable')].filter(d => d.dragging)[0];
         if (d) {
+            console.log([clientX, clientY]);
             const rv = $('#video-overlay').getBoundingClientRect();
             const r = d.getBoundingClientRect();
-            let x = d.dx + e.clientX;
-            let y = d.dy + e.clientY;
+            let x = d.dx + clientX;
+            let y = d.dy + clientY;
             if (x < 0) x = 0;
             if (x + r.width > rv.width) x = rv.width - r.width;
             if (y < 0) y = 0;
@@ -160,38 +168,55 @@ window.addEventListener('load', e => {
             d.style.left = x + 'px';
             d.style.top = y + 'px';
         }
+    }
+
+    $('#video-overlay').addEventListener('mousemove', e => {
+        moveOrTouchMove(e.clientX, e.clientY);
     });
-    $('#video-overlay').addEventListener('mousedown', e => {
+    
+    $('#video-overlay').addEventListener('touchmove', e => {
+        moveOrTouchMove(e.touches[0].clientX, e.touches[0].clientY);
+    });
+
+    function deselectText() {
         // Video playing
         if (!$('#display-overlay').checked) {
             $('#video-overlay').style.display = 'none';
             player.pause();
         }
-        console.log('overlay down');
-        /*if (!$('#display-overlay').checked) {
-            return;
-        }*/
         [...$$('.draggable')].forEach(d => d.dragging = false);
         if (selected) {
             selected.classList.remove('selected');
             selected = null;
         }
+    }
+
+    $('#video-overlay').addEventListener('mousedown', e => {
+        deselectText();
+    });
+    
+    $('#video-overlay').addEventListener('touchstart', e => {
+        deselectText();
     });
 
-    $('#video-overlay').addEventListener('mouseup', e => {
+    function upLeaveOrTouchEnd() {
         if (!$('#display-overlay').checked) {
             return;
         }
         [...$$('.draggable')].forEach(d => d.dragging = false);
         console.log('up');
+    }
+
+    $('#video-overlay').addEventListener('mouseup', e => {
+        upLeaveOrTouchEnd();
     });
 
     $('#video-overlay').addEventListener('mouseleave', e => {
-        if (!$('#display-overlay').checked) {
-            return;
-        }
-        [...$$('.draggable')].forEach(d => d.dragging = false);
-        console.log('out');
+        upLeaveOrTouchEnd();
+    });
+    
+    $('#video-overlay').addEventListener('touchend', e => {
+        upLeaveOrTouchEnd();
     });
 
     $('#display-overlay').addEventListener('change', e => {

@@ -1,5 +1,14 @@
 <?php
     include_once('mysql.php');
+    include_once('alphasongs.php');
+
+    if ($_POST['name'] && $_POST['comment']) {
+        $name = $_POST['name'];
+        $comment = $_POST['comment'];
+        $stmt = $mysqli->prepare('insert into comments (uniqid, name, comment) values (?, ?, ?)');
+        $stmt->bind_param('sss', $_GET['v'], $name, $comment);
+        $stmt->execute();
+    }
    
     if ($_GET['v']) {
         $stmt = $mysqli->prepare('select * from videos where uniqid = ?');
@@ -9,6 +18,7 @@
         $row = $res->fetch_assoc();
         $video = '/videos/'.$row['uniqid'].'.'.$row['ext'];
         $preview = '/preview/'.$row['uniqid'].'.png';
+        $id = $row['id'];
         $name = $row['name'];
         $user = $row['userid'];
         $views = $row['views'];
@@ -31,12 +41,19 @@
         $this_reply_res = $stmt->get_result();
     
         // Get replies
-        $stmt = $mysqli->prepare('select newvideo, name, created from replies 
+        $stmt = $mysqli->prepare('select newvideo, name, created, unix_timestamp(created) as created_unix from replies 
                             inner join videos on videos.uniqid = replies.newvideo 
                             where replies.oldvideo = ?');
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $replies_res = $stmt->get_result();
+
+        // Get comments
+        $stmt = $mysqli->prepare('select name, comment, created, unix_timestamp(created) as created_unix from comments
+                            where uniqid = ? order by created desc');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $comments_res = $stmt->get_result();
 
         // Load existing overlays
         $stmt = $mysqli->prepare('select * from texts where uniqid = ? and deleted = false');
@@ -58,6 +75,7 @@
 <link rel='stylesheet' href='/css/zikzok.css'>
 <link rel='stylesheet' href='/css/video.css'>
 <script src='/js/video.js'></script>
+<script src='/js/comments.js'></script>
 </head>
 <body>
 <div id='container'>
@@ -73,7 +91,8 @@
 	<p>
         <span id='video-title'>
         <?= htmlspecialchars($name)  ?></span><br>
-        By: <?= $user ?> Created: <?= $created ?>
+        By: <?= $user ?> Created: <?= $created ?><br>
+        Video's AlphaSong: <span id='alphasong'><?= getAlphasongFromId($id) ?></span>
     </p>
     <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
@@ -110,6 +129,32 @@
             <video id='video-elt' class='video-js' controls playsinline>
                 <source src='<?= $video ?>'>
             </video>
+        </div>
+        <h4>Make a comment</h4>
+        <form id='comment-form' method='post' action='/video.php?v=<?= $_GET['v'] ?>'>
+            <label for='comment-name'>Name:</label>
+            <input type='text' id='comment-name' name='name'><br>
+            <label for='comment'>Comment:</label>
+            <textarea id='comment' name='comment'></textarea>
+            <button id='comment-submit'>Submit</button>
+        </form>
+        <div id='comments'>
+<?php
+    if ($comments_res->num_rows) {
+        $n = $comments_res->num_rows;
+        echo "Comments: ($n)<br>";
+        echo "<ol>";
+    }
+    while ($row = $comments_res->fetch_assoc()) {
+        $name = htmlspecialchars($row['name']);
+        $comment = htmlspecialchars($row['comment']);
+        $created = htmlspecialchars($row['created']);
+        echo "<li><strong>$name</strong> on $created: $comment</li>";
+    }
+    if ($comments_res->num_rows) {
+        echo "</ol>";
+    }
+?>
         </div>
         <div id='replies'>
 <?php

@@ -1,9 +1,10 @@
 <?php
     include_once('mysql.php');
 
-    $NTOP = 5;
+    $NTOP = 8;
     $NRECENT = 20;
 
+    // Get videos + number replies
     $stmt = $mysqli->prepare('select uniqid,name,likes,created,unix_timestamp(created) as created_unix,count(newvideo) as nreplies from videos 
         left join replies on videos.uniqid = replies.oldvideo 
         where uniqid is not null 
@@ -12,7 +13,6 @@
     $stmt->execute();
     $res = $stmt->get_result();
 
-    $all = array();
     $top = array();
     $rest = array();
 
@@ -23,23 +23,22 @@
     }
 
     while ($row = $res->fetch_assoc()) {
-        array_push($all, $row);
+        // Get number of comments for each video
+        $uniqid = $row['uniqid'];
+        $stmt = $mysqli->prepare('select uniqid,count(id) as ncomments from comments where uniqid = ? group by uniqid order by created desc');
+        $stmt->bind_param('s', $uniqid);
+        $stmt->execute();
+        $res2 = $stmt->get_result();
+        $crow = $res2->fetch_assoc();
+        $row['ncomments'] = $crow['ncomments'] ? $crow['ncomments'] : 0;
+
+        // Add to top and rest (rest is actually all)
+        array_push($rest, $row);
         array_push($top, $row);
     }
 
     uasort($top, 'compareTop');
     $top = array_slice($top, 0, $NTOP);
-
-    foreach ($all as $row) {
-        $keep = true;
-        /*foreach ($top as $toprow) {
-            if ($toprow['uniqid'] == $row['uniqid']) {
-                $keep = false;
-                break;
-            }
-        }*/
-        if ($keep) array_push($rest, $row);
-    }
     
     if (!$_GET['all']) {
         $rest = array_slice($rest, 0, $NRECENT);
@@ -51,17 +50,24 @@
         $created = htmlspecialchars($row['created']);
         $likes = htmlspecialchars($row['likes']);
         $nreplies = $row['nreplies'];
+        $ncomments = $row['ncomments'];
         echo <<<EOT
     <div class="video-block">
 		<p>
             <a href="video.php?v=$uniqid"><span class="video-name">$name</span></a>
 EOT;
-        if ($nreplies && $likes) {
-            echo "<br>($nreplies replies, $likes likes)";
-        } else if ($nreplies) {
-            echo "<br>($nreplies replies)";
-        } else if ($likes) {
-            echo "<br>($likes likes)";
+        $discussion = array();
+        if ($nreplies) {
+            array_push($discussion, "$nreplies replies");
+        } 
+        if ($likes) {
+            array_push($discussion, "$likes likes");
+        }
+        if ($ncomments) {
+            array_push($discussion, "$ncomments comments");
+        }
+        if (count($discussion)) {
+            echo '<br>(' . implode(', ', $discussion) . ')';
         }
         echo <<<EOT
             <br>
