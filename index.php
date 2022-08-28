@@ -17,8 +17,8 @@
     $rest = array();
 
     function compareTop($a, $b) {
-        $ascore = round($a['nreplies']*pow(2, (intval($a['created_unix'])-time())/(3600*24))*10000);
-        $bscore = round($b['nreplies']*pow(2, (intval($b['created_unix'])-time())/(3600*24))*10000);
+        $ascore = round(($a['nreplies']+$a['ncomments']/3+$a['likes']/10)*pow(2, (intval($a['created_unix'])-time())/(2*3600*24))*10000);
+        $bscore = round(($b['nreplies']+$b['ncomments']/3+$b['likes']/10)*pow(2, (intval($b['created_unix'])-time())/(2*3600*24))*10000);
         return $bscore-$ascore;
     }
 
