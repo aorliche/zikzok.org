@@ -31,6 +31,23 @@
 <!-- zikzok -->
 <script src='/js/predict.js'></script>
 <script type='module' src='record.js'></script>
+<!-- MSPs -->
+<script src='/js/msp/build_common.js'></script>
+<script src='/js/msp/build_flower.js'></script>
+<script src='/js/msp/build_random.js'></script>
+<script src='/js/msp/build_star.js'></script>
+<script src='/js/msp/chains.js'></script>
+<script src='/js/msp/draw.js'></script>
+<script src='/js/msp/expand_common.js'></script>
+<script src='/js/msp/expand_flower.js'></script>
+<script src='/js/msp/expand_random.js'></script>
+<script src='/js/msp/flips.js'></script>
+<script src='/js/msp/hole.js'></script>
+<script src='/js/msp/msp.js'></script>
+<script src='/js/msp/rhombus.js'></script>
+<script src='/js/msp/util.js'></script>
+<script src='/js/msp/vertex.js'></script>
+<!-- Stylesheets -->
 <link rel='stylesheet' href='/css/zikzok.css'>
 <link rel='stylesheet' href='/css/record.css'>
 </head>
@@ -87,6 +104,9 @@
 ?>
 	<div id='info'></div>
     <div id='more-info'></div>
+    <div id='msp'>
+        <canvas width=80 height=80></canvas>
+    </div>
     </div>
 </div>
 </body>

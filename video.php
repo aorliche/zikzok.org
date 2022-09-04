@@ -71,10 +71,27 @@
 <!-- videojs -->
 <script src="https://vjs.zencdn.net/7.20.1/video.min.js"></script>
 <link href="https://vjs.zencdn.net/7.20.1/video-js.css" rel="stylesheet" />
+<!-- MSPs -->
+<script src='/js/msp/build_common.js'></script>
+<script src='/js/msp/build_flower.js'></script>
+<script src='/js/msp/build_random.js'></script>
+<script src='/js/msp/build_star.js'></script>
+<script src='/js/msp/chains.js'></script>
+<script src='/js/msp/draw.js'></script>
+<script src='/js/msp/expand_common.js'></script>
+<script src='/js/msp/expand_flower.js'></script>
+<script src='/js/msp/expand_random.js'></script>
+<script src='/js/msp/flips.js'></script>
+<script src='/js/msp/hole.js'></script>
+<script src='/js/msp/msp.js'></script>
+<script src='/js/msp/rhombus.js'></script>
+<script src='/js/msp/util.js'></script>
+<script src='/js/msp/vertex.js'></script>
 <!-- zikzok -->
 <link rel='stylesheet' href='/css/zikzok.css'>
 <link rel='stylesheet' href='/css/video.css'>
 <script src='/js/video.js'></script>
+<script src='/js/video_msp.js'></script>
 <script src='/js/comments.js'></script>
 </head>
 <body>
@@ -88,12 +105,14 @@
         echo "<p>This is a reply to video <a href='/video.php?v=$olduniqid'>$oldname<img class='reply-thumb' src='/preview/$olduniqid.png'></a></p>";
     }
 ?>
-	<p>
-        <span id='video-title'>
-        <?= htmlspecialchars($name)  ?></span><br>
-        By: <?= $user ?> Created: <?= $created ?><br>
-        Video's AlphaSong: <span id='alphasong'><?= getAlphasongFromId($id) ?></span>
-    </p>
+	<div id='video-header'>
+        <div id='video-title-info'>
+            <div id='video-title'><?= htmlspecialchars($name)  ?></div>
+            <div id='video-info'>By: <?= $user ?> Created: <?= $created ?></div>
+        </div>
+        <canvas width=80 height=80></canvas>
+        <!-- Video's AlphaSong: <span id='alphasong'><?= getAlphasongFromId($id) ?></span> -->
+    </div>
     <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
         Likes: <span id='likes'><?= $likes ?></span>

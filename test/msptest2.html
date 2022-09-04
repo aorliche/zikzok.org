@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MSP Test</title>
+    <script src='../js/msp/build_common.js'></script>
+    <script src='../js/msp/build_flower.js'></script>
+    <script src='../js/msp/build_random.js'></script>
+    <script src='../js/msp/build_star.js'></script>
+    <script src='../js/msp/chains.js'></script>
+    <script src='../js/msp/draw.js'></script>
+    <script src='../js/msp/expand_common.js'></script>
+    <script src='../js/msp/expand_flower.js'></script>
+    <script src='../js/msp/expand_random.js'></script>
+    <script src='../js/msp/flips.js'></script>
+    <script src='../js/msp/hole.js'></script>
+    <script src='../js/msp/msp.js'></script>
+    <script src='../js/msp/rhombus.js'></script>
+    <script src='../js/msp/util.js'></script>
+    <script src='../js/msp/vertex.js'></script>
+    <script>
+window.addEventListener('load', e => {
+    canvas = document.querySelector('canvas');
+    fetch('test1.msp')
+    .then(resp => resp.json())
+    .then(json => {
+        msps.push(json);
+        repaint();
+    })
+    .catch(err => console.log(err));
+});
+    </script>
+</head>
+<body>
+<canvas width=80 height=80 style='border: 1px solid white;'></canvas>
+</body>
+</html>

@@ -29,6 +29,12 @@
     font-size: 20px;
     font-weight: bold;
 }
+#video-title-info {
+    display: inline-block;
+}
+#video-header canvas {
+    vertical-align: top;
+}
 
 .draggable {
     display: inline-block;

@@ -12,6 +12,7 @@
     $pred_likes = $_POST['predLikes'];
     $pred_views = $_POST['predViews'];
     $replyto = $_POST['replyto'];
+    $msp = $_POST['msp'];
 	if (!$name) {
 		error('empty name');
 		return;
@@ -22,6 +23,7 @@
 
 	$saveName = "../videos/$uniqid.mp4";
     $save_img_name = "../preview/$uniqid.png";
+    $save_msp_name = "../msps/$uniqid.msp.json";
 	$resp = array();
     $resp['name'] = $name;
 	$resp['uniqid'] = $uniqid;
@@ -38,6 +40,12 @@
 		error('cannot move uploaded preview image');
 		return;
 	}
+
+    // Save msp
+    if (!file_put_contents($save_msp_name, $msp)) {
+        error('failed to write msp data to file');
+        return;
+    }
 	
 	echo json_encode($resp, JSON_UNESCAPED_SLASHES);
 

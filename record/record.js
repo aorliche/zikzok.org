@@ -7,13 +7,13 @@ function getVideoImage(path, secs, callback) {
         this.currentTime = Math.min(Math.max(0, (secs < 0 ? this.duration : 0) + secs), this.duration);
     };
     video.onseeked = function(e) {
-        var canvas = document.createElement('canvas');
-        canvas.height = video.videoHeight;
-        canvas.width = video.videoWidth;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var canvas2 = document.createElement('canvas');
+        canvas2.height = video.videoHeight;
+        canvas2.width = video.videoWidth;
+        var ctx = canvas2.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas2.width, canvas2.height);
         var img = new Image();
-        img.src = canvas.toDataURL();
+        img.src = canvas2.toDataURL();
         callback.call(me, img, this.currentTime, e);
     };
     video.onerror = function(e) {
@@ -22,7 +22,7 @@ function getVideoImage(path, secs, callback) {
     video.src = path;
 }
 
-function upload(video, img) {
+function upload(video, img, mspStr) {
 	const nameInput = document.querySelector('#name');
 	const data = new FormData();
 	const name = nameInput.value;
@@ -32,6 +32,7 @@ function upload(video, img) {
     data.append('predLikes', selLikes.innerText);
     data.append('predViews', selViews.innerText);
     data.append('replyto', nameInput.dataset.replyto);
+    data.append('msp', mspStr);
 	fetch('upload.php', {
 		method: 'POST',
 		body: data
@@ -67,6 +68,12 @@ function dataURItoBlob(dataURI) {
 let player, previewImg;
 
 window.addEventListener('load', e => {
+    // MSP-specific, canvas declared in draw.js
+    canvas = document.querySelector('canvas');
+    const msp = buildStarMSP(6, 20, false);
+    msps.push(msp);
+    repaint(canvas);
+    // Video
 	const info = document.querySelector('#info');
 	const moreInfo = document.querySelector('#more-info');
     const mobileElt = document.querySelector('#mobile-elt');
@@ -80,7 +87,7 @@ window.addEventListener('load', e => {
             console.log(evt);
             console.log(img);*/
             const blob = dataURItoBlob(img.src);
-            upload(vf, blob);
+            upload(vf, blob, JSON.stringify(msp));
         }
         getVideoImage(video, 0.1, cb);
     });
@@ -137,9 +144,6 @@ window.addEventListener('load', e => {
             info.innerText = 'Finished converting, grabbing screen preview';
             vf = player.convertedData;
             reader.readAsDataURL(vf);
-            /*console.log(player.convertedData.name);
-            console.log(player.convertedData.size);
-            upload(player.convertedData, previewImg);*/
         });
     }
 });
