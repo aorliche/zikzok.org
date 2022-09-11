@@ -49,11 +49,19 @@
         $replies_res = $stmt->get_result();
 
         // Get comments
-        $stmt = $mysqli->prepare('select name, comment, created, unix_timestamp(created) as created_unix from comments
+        $stmt = $mysqli->prepare('select name, comment, created, 
+                            unix_timestamp(created) as created_unix from comments
                             where uniqid = ? order by created desc');
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $comments_res = $stmt->get_result();
+
+        // Get likes
+        $stmt = $mysqli->prepare('select * from likes left join users on likes.userid = users.id
+                            where uniqid = ? order by when_made desc');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $likes_res = $stmt->get_result();
 
         // Load existing overlays
         $stmt = $mysqli->prepare('select * from texts where uniqid = ? and deleted = false');
@@ -118,6 +126,8 @@
         Likes: <span id='likes'><?= $likes ?></span>
         <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
         <a href='#like' id='like'>Like it<img src='/images/like.gif' height='32px'></a>
+        <a href='#disagree' id='disagree'>Disagree<img src='/images/unsure.jpg' height='32px'></a>
+        <a href='#hate' id='hate'>Hate it<img src='/images/disagree.png' height='18px'></a>
         <a href='#open-editor' id='open-editor'>Open editor</a>
         <br>
         <div style='display: inline-block; margin-top: 7px; position: relative;'>
@@ -149,6 +159,30 @@
                 <source src='<?= $video ?>'>
             </video>
         </div>
+<?php
+    if ($likes_res->num_rows) {
+        echo <<<EOT
+        <div id='likes-div'>
+            <a id='blame-likes-a' href='#blame-likes'>Who liked this video?</a>
+            <ul id='likes-ul' style='display: none;'>
+        EOT;
+        while ($row = $likes_res->fetch_assoc()) {
+            $type = $row['type'];
+            $name = $row['name'];
+            $ip = $row['ip'];
+            $when = $row['when_made'];
+            $ai = $row['ai'] ? ' (AI)' : '';
+            $nameip = $name ? $name : $ip;
+            echo <<<EOT
+                <li>$nameip$ai ($when) $type</li>
+                EOT;
+        }
+        echo <<<EOT
+            </ul>
+        </div>
+        EOT;
+    }
+?>
         <h4>Make a comment</h4>
         <form id='comment-form' method='post' action='/video.php?v=<?= $_GET['v'] ?>'>
             <label for='comment-name'>Name:</label>

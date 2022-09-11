@@ -43,18 +43,45 @@ window.addEventListener('load', e => {
         });
     });
 
-    $('#like').addEventListener('click', e => {
-        fetch(`/like.php?v=${new URL(document.location).searchParams.get('v')}`)
+    function likeOrDisagree(type) {
+        fetch(`/like.php?v=${new URL(document.location).searchParams.get('v')}&type=${type}`)
         .then(resp => resp.text())
         .then(text => {
             if (text == 'ok') {
-                const n = parseInt($('#likes').innerText);
-                $('#likes').innerText = n+1;
+                if (!type || type == 'like') {
+                    const n = parseInt($('#likes').innerText);
+                    $('#likes').innerText = n+1;
+                } 
             } else {
                 alert(text);
             }
         })
         .catch(err => console.log(err));
+
+    }
+
+    // Like video
+    $('#like').addEventListener('click', e => {
+        e.preventDefault();
+        likeOrDisagree('like');
+    });
+
+    // Disagree with video
+    $('#disagree').addEventListener('click', e => {
+        e.preventDefault();
+        likeOrDisagree('disagree');
+    });
+    
+    // Disagree with video
+    $('#hate').addEventListener('click', e => {
+        e.preventDefault();
+        likeOrDisagree('hate');
+    });
+
+    // View likes
+    $('#blame-likes-a').addEventListener('click', e => {
+        e.preventDefault();
+        $('#likes-ul').style.display = 'block';
     });
 
     let selected = null;
