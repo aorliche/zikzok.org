@@ -127,7 +127,7 @@
         <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
         <a href='#like' id='like'>Like it<img src='/images/like.gif' height='32px'></a>
         <a href='#disagree' id='disagree'>Disagree<img src='/images/unsure.jpg' height='32px'></a>
-        <a href='#hate' id='hate'>Hate it<img src='/images/disagree.png' height='18px'></a>
+        <a href='#hate' id='hate'>Hate it<img src='/images/disagree.png' height='28px'></a>
         <a href='#open-editor' id='open-editor'>Open editor</a>
         <br>
         <div style='display: inline-block; margin-top: 7px; position: relative;'>
