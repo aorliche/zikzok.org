@@ -29,8 +29,12 @@
         $stmt->bind_param('s', $uniqid);
         $stmt->execute();
         $res2 = $stmt->get_result();
-        $crow = $res2->fetch_assoc();
-        $row['ncomments'] = $crow['ncomments'] ? $crow['ncomments'] : 0;
+        if ($res2->num_rows) {
+            $crow = $res2->fetch_assoc();
+            $row['ncomments'] = $crow['ncomments'] ? $crow['ncomments'] : 0;
+        } else {
+            $row['ncomments'] = 0;
+        }
 
         // Add to top and rest (rest is actually all)
         array_push($rest, $row);
@@ -97,7 +101,11 @@ EOT;
 <body>
 <div id='container'>
 	<h1><a href='/'>ZikZok</a></h1>
-	<div id='navigation'><a href='record/'>Record a video</a> <a href='signup.php'>Sign up</a></div>
+	<div id='navigation'>
+        <a href='record/'>Record a video</a>
+        <a href='signup.php'>Sign up</a>
+        <a href='user.php?u=1'>Heisenberg's reserve</a>
+    </div>
     <h2>Top Videos</h2>
     <div id='top-videos'>
 <?php

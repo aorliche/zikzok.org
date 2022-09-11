@@ -127,7 +127,7 @@
         <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
         <a href='#like' id='like'>Like it<img src='/images/like.gif' height='32px'></a>
         <a href='#disagree' id='disagree'>Disagree<img src='/images/unsure.jpg' height='32px'></a>
-        <a href='#hate' id='hate'>Hate it<img src='/images/disagree.png' height='28px'></a>
+        <a href='#hate' id='dislike'>Dislike<img src='/images/disagree.png' height='28px'></a>
         <a href='#open-editor' id='open-editor'>Open editor</a>
         <br>
         <div style='display: inline-block; margin-top: 7px; position: relative;'>
@@ -168,13 +168,21 @@
         EOT;
         while ($row = $likes_res->fetch_assoc()) {
             $type = $row['type'];
-            $name = $row['name'];
+            $name = htmlspecialchars($row['name']);
             $ip = $row['ip'];
             $when = $row['when_made'];
             $ai = $row['ai'] ? ' (AI)' : '';
-            $nameip = $name ? $name : $ip;
+            if ($name) {
+                $userid = $row['userid'];
+                $display = "<a href='/user.php?u=$userid'>$name</a>";
+                if ($ai) {
+                    $display .= ' (AI)';
+                }
+            } else {
+                $display = $ip;
+            }
             echo <<<EOT
-                <li>$nameip$ai ($when) $type</li>
+                <li>$display ($when) $type</li>
                 EOT;
         }
         echo <<<EOT

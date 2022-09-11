@@ -44,7 +44,8 @@ window.addEventListener('load', e => {
     });
 
     function likeOrDisagree(type) {
-        fetch(`/like.php?v=${new URL(document.location).searchParams.get('v')}&type=${type}`)
+        const uniqid = new URL(document.location).searchParams.get('v');
+        fetch(`/like.php?v=${uniqid}&type=${type}`)
         .then(resp => resp.text())
         .then(text => {
             if (text == 'ok') {
@@ -52,6 +53,8 @@ window.addEventListener('load', e => {
                     const n = parseInt($('#likes').innerText);
                     $('#likes').innerText = n+1;
                 } 
+               // window.location.reload();
+                window.location.href = `/video.php?v=${uniqid}`;
             } else {
                 alert(text);
             }
@@ -73,16 +76,18 @@ window.addEventListener('load', e => {
     });
     
     // Disagree with video
-    $('#hate').addEventListener('click', e => {
+    $('#dislike').addEventListener('click', e => {
         e.preventDefault();
-        likeOrDisagree('hate');
+        likeOrDisagree('dislike');
     });
 
     // View likes
-    $('#blame-likes-a').addEventListener('click', e => {
-        e.preventDefault();
-        $('#likes-ul').style.display = 'block';
-    });
+    try {
+        $('#blame-likes-a').addEventListener('click', e => {
+            e.preventDefault();
+            $('#likes-ul').style.display = 'block';
+        });
+    } catch (e) {}
 
     let selected = null;
     const texts = [];
