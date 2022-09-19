@@ -17,7 +17,7 @@
     // Like random videos
     // 2 Recent videos
     $stmt = $mysqli->prepare('select uniqid from videos 
-        where unix_timestamp(created)+2*24*3600 > unix_timestamp(current_timestamp())
+        where unix_timestamp(created)+5*24*3600 > unix_timestamp(current_timestamp())
         order by rand() limit 2');
     $stmt->execute();
     $res = $stmt->get_result();
@@ -29,7 +29,7 @@
 
     // 1 Recent video with no likes (comments + replies too hard)
     $stmt = $mysqli->prepare('select uniqid from videos 
-        where unix_timestamp(created)+2*24*3600 > unix_timestamp(current_timestamp())
+        where unix_timestamp(created)+5*24*3600 > unix_timestamp(current_timestamp())
         and likes = 0
         order by rand()');
     $stmt->execute();
@@ -43,7 +43,7 @@
 
     // 2 Old time videos
     $stmt = $mysqli->prepare('select uniqid from videos 
-        where unix_timestamp(created)+2*24*3600 < unix_timestamp(current_timestamp()) 
+        where unix_timestamp(created)+5*24*3600 < unix_timestamp(current_timestamp()) 
         order by rand() limit 2');
     $stmt->execute();
     $res = $stmt->get_result();
@@ -53,7 +53,7 @@
 
     // 2 Recent random videos are disagreed with
     $stmt = $mysqli->prepare('select uniqid from videos 
-        where unix_timestamp(created)+2*24*3600 > unix_timestamp(current_timestamp())
+        where unix_timestamp(created)+5*24*3600 > unix_timestamp(current_timestamp())
         order by rand() limit 2');
     $stmt->execute();
     $res = $stmt->get_result();
