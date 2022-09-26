@@ -19,5 +19,5 @@ window.addEventListener('load', e => {
             requestAnimationFrame(e => updateHeisenberg(left-1, duration));
         }
     }
-    updateHeisenberg(120,120);
+    updateHeisenberg(360,360);
 });
