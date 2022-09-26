@@ -35,6 +35,23 @@
         } else {
             $row['ncomments'] = 0;
         }
+        
+        // Get Heisenberg's likes
+        $stmt = $mysqli->prepare('select type from likes where userid = 1 and uniqid = ?');
+        $stmt->bind_param('s', $uniqid);
+        $stmt->execute();
+        $likes_res = $stmt->get_result();
+        $row['hscore'] = 0;
+        while ($lrow = $likes_res->fetch_assoc()) {
+            $type = $lrow['type'];
+            if ($type == 'like') {
+                $row['hscore'] += 10;
+            } else if ($type == 'dislike') {
+                $row['hscore'] += 3;
+            } else {
+                $row['hscore'] += 1;
+            }
+        }
 
         // Add to top and rest (rest is actually all)
         array_push($rest, $row);
@@ -55,9 +72,10 @@
         $likes = htmlspecialchars($row['likes']);
         $nreplies = $row['nreplies'];
         $ncomments = $row['ncomments'];
+        $hscore = $row['hscore'] < 99 ? sprintf('%02d', $row['hscore']) : 99;
         echo <<<EOT
     <div class="video-block">
-		<p>
+        <p>
             <a href="video.php?v=$uniqid"><span class="video-name">$name</span></a>
 EOT;
         $discussion = array();
@@ -75,12 +93,28 @@ EOT;
         }
         echo <<<EOT
             <br>
-		    $created
+            $created
         </p>
-		<a href="video.php?v=$uniqid">
-            <img class="video-preview" alt="$uniqid" src="preview/$uniqid.png">
+        <a href="video.php?v=$uniqid">
+            <div style='position: relative; display: inline-block;'>
+        EOT;
+        if ($hscore > 0) {
+            echo <<<EOT
+            <div class='hoverlay-back' style='position: absolute; display: inline-block; z-index: 8; width: 100%; text-align: center; 
+                background-color: white;'></div>
+            <div style='position: absolute; display: inline-block; z-index: 10; font-size: 80px; font-weight: bold; width: 100%;
+                text-align: center; background: url(/preview/$uniqid.png); background-size: cover; background-clip: text; 
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent;' class='hunimal-font hoverlay'>&#x55$hscore</div>
+            <img alt="$uniqid" src="preview/$uniqid.png"></div>
+            EOT;
+        } else {
+            echo <<<EOT
+            <img alt="$uniqid" src="preview/$uniqid.png"></div>
+            EOT;
+        }
+        echo <<<EOT
         </a>
-	</div>
+    </div>
 EOT;
     }
 
@@ -100,8 +134,8 @@ EOT;
 </head>
 <body>
 <div id='container'>
-	<h1><a href='/'>ZikZok</a></h1>
-	<div id='navigation'>
+    <h1><a href='/'>ZikZok</a></h1>
+    <div id='navigation'>
         <a href='record/'>Record a video</a>
         <a href='signup.php'>Sign up</a>
         <a href='user.php?u=1'>Heisenberg's reserve</a>
@@ -114,20 +148,20 @@ EOT;
     }
 ?>
     </div>
-	<h2>Recent Videos 
+    <h2>Recent Videos 
         <span style='font-size: 16px; font-weight: normal;'>
             (<?= count($rest) ?> videos)
             <a href='/index.php?all=true'>Show all</a>
             <a href='/'>Show fewer</a>
         </span>
     </h2>
-	<div id='videos'>
+    <div id='videos'>
 <?php
     foreach ($rest as $row) {
         outputVideo($row);
     }
 ?>
-	</div>
+    </div>
 </div>
 </body>
 </html>
