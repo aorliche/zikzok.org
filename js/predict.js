@@ -1,13 +1,18 @@
 var $ = e => document.querySelector(e);
-var $$ = e => document.querySelectorAll(e);
+var $$ = e => [...document.querySelectorAll(e)];
 
 let selViews = null, selLikes = null;
 
 window.addEventListener('load', e => {
     let madePred = false;
     
-    const predViews = [...$$('#pred-views .pred-button')];
-    const predLikes = [...$$('#pred-likes .pred-button')];
+    const predViews = $$('#pred-views .pred-button');
+    const predLikes = $$('#pred-likes .pred-button');
+    
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const nam = urlSearchParams.get('name');
+    const lik = urlSearchParams.get('predLikes');
+    const view = urlSearchParams.get('predViews');
 
     [predViews, predLikes].forEach(pp => {
         pp.forEach(b => {
@@ -19,6 +24,22 @@ window.addEventListener('load', e => {
             });
         });
     });
+    
+    if (nam) {
+        $('#name').value = nam;
+    }
+    
+    predViews.forEach(b => {
+        if (b.innerText == view) {
+            b.classList.add('selected');
+        }
+    }
+    
+    predLikes.forEach(b => {
+        if (b.innerText == lik) {
+            b.classList.add('selected');
+        }
+    }
 
     $('#pred-submit').addEventListener('click', e => {
         e.preventDefault();
@@ -37,5 +58,8 @@ window.addEventListener('load', e => {
         $('#pred').style.display = 'none';
         $('#post-pred').style.display = 'block';
     });
-
+    
+    if (urlSearchParams.get('alt')) {
+        $('#pred-submit').dispatchEvent(new Event('click'));
+    }
 });

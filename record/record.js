@@ -67,6 +67,8 @@ function dataURItoBlob(dataURI) {
 
 let player, previewImg;
 
+var $ = q => document.querySelector(q);
+
 window.addEventListener('load', e => {
     // MSP-specific, canvas declared in draw.js
     canvas = document.querySelector('canvas');
@@ -80,6 +82,12 @@ window.addEventListener('load', e => {
     const nameInput = document.querySelector('#name');
     const reader = new FileReader();
     let vf = null;
+    $('#alt-link').addEventListener('click', e => {
+        const n = encodeURIComponent(nameInput.value);
+        const l = encodeURIComponent(selLikes.innerText);
+        const v = encodeURIComponent(selViews.value);
+        e.target.href += `?name=${n}&predlikes=${l}&predViews=${v}`;
+    });
     reader.addEventListener('load', e => {
         const video = e.target.result;
         function cb(img, time, evt) {
