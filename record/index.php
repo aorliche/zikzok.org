@@ -97,7 +97,7 @@
         <li>Wait for the video to convert and upload</li>
 		<li>Videos are limited to 60s</li>
 	</ul>
-    <p><strong>If you're having trouble, <a id='alt-link' href='/record/index.php?alt=true'>switch to the alternate view</a></strong></p>
+    <p><strong>If you're having trouble, <a id='alt-link' href='/record/index.php'>switch to the alternate view</a></strong></p>
 	<video id='videoElt' controls playsinline preload='none' class='video-js vjs-default-skin'></video>
 <?php
     }

@@ -82,12 +82,14 @@ window.addEventListener('load', e => {
     const nameInput = document.querySelector('#name');
     const reader = new FileReader();
     let vf = null;
-    $('#alt-link').addEventListener('click', e => {
-        const n = encodeURIComponent(nameInput.value);
-        const l = encodeURIComponent(selLikes.innerText);
-        const v = encodeURIComponent(selViews.value);
-        e.target.href += `?name=${n}&predlikes=${l}&predViews=${v}`;
-    });
+    if ($('#alt-link')) {
+        $('#alt-link').addEventListener('click', e => {
+            const n = encodeURIComponent(nameInput.value);
+            const l = encodeURIComponent(selLikes.innerText);
+            const v = encodeURIComponent(selViews.innerText);
+            e.target.href += `?alt=true&name=${n}&predLikes=${l}&predViews=${v}`;
+        });
+    }
     reader.addEventListener('load', e => {
         const video = e.target.result;
         function cb(img, time, evt) {

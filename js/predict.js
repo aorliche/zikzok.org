@@ -33,13 +33,13 @@ window.addEventListener('load', e => {
         if (b.innerText == view) {
             b.classList.add('selected');
         }
-    }
+    });
     
     predLikes.forEach(b => {
         if (b.innerText == lik) {
             b.classList.add('selected');
         }
-    }
+    });
 
     $('#pred-submit').addEventListener('click', e => {
         e.preventDefault();
