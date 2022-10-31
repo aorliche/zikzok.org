@@ -37,7 +37,7 @@
         }
         
         // Get Heisenberg's likes
-        $stmt = $mysqli->prepare('select type from likes where userid = 1 and uniqid = ?');
+        /*$stmt = $mysqli->prepare('select type from likes where userid = 1 and uniqid = ?');
         $stmt->bind_param('s', $uniqid);
         $stmt->execute();
         $likes_res = $stmt->get_result();
@@ -51,7 +51,7 @@
             } else {
                 $row['hscore'] += 1;
             }
-        }
+        }*/
 
         // Add to top and rest (rest is actually all)
         array_push($rest, $row);
@@ -72,7 +72,7 @@
         $likes = htmlspecialchars($row['likes']);
         $nreplies = $row['nreplies'];
         $ncomments = $row['ncomments'];
-        $hscore = $row['hscore'] < 99 ? sprintf('%02d', $row['hscore']) : 99;
+        //$hscore = $row['hscore'] < 99 ? sprintf('%02d', $row['hscore']) : 99;
         echo <<<EOT
     <div class="video-block">
         <p>
@@ -98,7 +98,7 @@ EOT;
         <a href="video.php?v=$uniqid">
             <div style='position: relative; display: inline-block;'>
         EOT;
-        if ($hscore > 0) {
+        /*if ($hscore > 0) {
             echo <<<EOT
             <div class='hoverlay-back' style='position: absolute; display: inline-block; z-index: 8; width: 100%; text-align: center; 
                 background-color: white;'></div>
@@ -107,11 +107,11 @@ EOT;
                 -webkit-background-clip: text; -webkit-text-fill-color: transparent;' class='hunimal-font hoverlay'>&#x55$hscore</div>
             <img alt="$uniqid" src="preview/$uniqid.png"></div>
             EOT;
-        } else {
+        } else {*/
             echo <<<EOT
             <img alt="$uniqid" src="preview/$uniqid.png"></div>
             EOT;
-        }
+        //}
         echo <<<EOT
         </a>
     </div>
