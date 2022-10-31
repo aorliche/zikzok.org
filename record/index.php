@@ -16,16 +16,23 @@
 <meta charset='utf-8'>
 <link rel="icon" type="image/png" href="/images/icon.png">
 <title>Record Video | ZikZok</title>
+<!--<script src='/lib/require.js'></script>-->
 <!-- RecordRTC -->
 <script src="/lib/node_modules/recordrtc/RecordRTC.min.js"></script>
+<!--<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>-->
 <!-- videojs -->
 <script src="/lib/node_modules/video.js/dist/video.min.js"></script>
 <link href="/lib/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+<!--<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />-->
 <!-- ffmpeg.wasm -->
+<!--<script src='https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/src/index.min.js'></script>-->
 <script src="/lib/node_modules/@ffmpeg/ffmpeg/dist/ffmpeg.min.js"></script>
 <!-- videojs-record -->
 <script src='/lib/node_modules/videojs-record/dist/videojs.record.min.js'></script>
 <link rel="stylesheet" href="/lib/node_modules/videojs-record/dist/css/videojs.record.min.css">
+<!--<link rel="stylesheet" href="//unpkg.com/videojs-record/dist/css/videojs.record.min.css">
+<script src="//unpkg.com/videojs-record/dist/videojs.record.min.js"></script>-->
 <!-- ffmpeg.wasm -->
 <script src="/lib/node_modules/videojs-record/dist/plugins/videojs.record.ffmpeg-wasm.min.js"></script>
 <!-- zikzok -->
