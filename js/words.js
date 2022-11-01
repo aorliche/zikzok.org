@@ -51,7 +51,7 @@ window.addEventListener('load', e => {
         $('#keywords').innerHTML = '';
         res.forEach(word => {
             const a = document.createElement('a');
-            a.href = encodeURIComponent(word.word);
+            a.href = '/search.php?w=' + encodeURIComponent(word.word);
             a.innerText = word.word;
             const span = document.createElement('span');
             span.innerText = ` (${usecount ? word.count : word.score.toFixed(1)}) `;

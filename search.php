@@ -11,7 +11,7 @@
         $likes = $video['likes'];
         $replies = $video['replies'];
         $comments = $video['comments'];
-        $text = $video['transcript'];
+        $text = strtolower($video['transcript']);
         $positions = array();
         foreach ($query as $word) {
             $pos = strpos($text, $word);
@@ -28,7 +28,7 @@
         }
         $discussion = array();
         if ($replies) {
-            array_push($discussion, "$nreplies replies");
+            array_push($discussion, "$replies replies");
         } 
         if ($likes) {
             array_push($discussion, "$likes likes");
@@ -37,7 +37,7 @@
             array_push($discussion, "$views views");
         }
         if ($comments) {
-            array_push($discussion, "$ncomments comments");
+            array_push($discussion, "$comments comments");
         }
         $discussion = implode(', ', $discussion);   
        echo <<<EOT
@@ -79,6 +79,7 @@ EOT;
         while ($row = $res->fetch_assoc()) {
             array_push($videos, $row);
         }
+        shuffle($videos);
     }
 ?>
 <!DOCTYPE html>

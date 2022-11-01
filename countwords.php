@@ -29,6 +29,12 @@ there
 their
 some
 think
+okay
+right
+alright
+here's
+does
+let's
 EOT;
 	$banlist = preg_split('/\s/', $banlist);
 
@@ -48,12 +54,17 @@ EOT;
             if (strlen($word) < 4) {
                 continue;
             }
+            // Ignore words that are greater than this length (David singing)
+            if (strlen($word) > 18) {
+                continue;
+            }
             // Ignore words on the banlist
             if (in_array($word, $banlist)) {
                 continue;
             }
             if (array_key_exists($word, $counts)) {
                 $counts[$word]++;
+                break;
             } else {
                 $counts[$word] = 1;
             }

@@ -31,6 +31,7 @@
 .video-search-block {
     margin-top: 10px;
     margin-bottom: 10px;
+    clear: both;
 }
 
 .video-block img, .video-search-block img {

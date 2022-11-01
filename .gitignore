@@ -1,11 +1,14 @@
 videos/*
 preview/*
 msps/*
+error_log
+*/erro_log
 errors.log
 */errors.log
 Hunimal2.token
 mysql.php
 wordcounts.json
+.htaccess
 lib/*
 !lib/node_modules
 !lib/node_modules/@ffmpeg/core/dist/
