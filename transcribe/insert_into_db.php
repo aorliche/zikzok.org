@@ -49,12 +49,12 @@
         if (in_array($bname, $wanted)) {
             $transcript = file_get_contents($fullpath);
             $transcript = fixZikZok($transcript);
-            $stmt = $mysqli->prepare('insert ignore into transcripts 
+            $stmt = $mysqli->prepare('insert into transcripts 
                 (uniqid, transcript) values (?, ?)');
             $stmt->bind_param('ss', $funiqid, $transcript);
             $stmt->execute();
             if ($mysqli->errno) {
-                echo "An error occured for $uniqid, $transcript:\n";
+                echo "An error occured for $funiqid, $transcript:\n";
                 echo $mysqli->error . "\n";
             } else {
                 $count += $mysqli->affected_rows;

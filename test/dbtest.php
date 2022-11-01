@@ -10,6 +10,7 @@
 <head>
 </head>
 <body>
+<?=ini_get('post_max_size');?>
 <?=ini_get('upload_max_filesize');?>
 <?php
     while ($row = $res->fetch_assoc()) {
