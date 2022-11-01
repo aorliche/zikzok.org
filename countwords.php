@@ -35,6 +35,24 @@ alright
 here's
 does
 let's
+when
+will
+things
+more
+something
+need
+thing
+well
+which
+also
+much
+here
+done
+well
+very
+little
+where
+these
 EOT;
 	$banlist = preg_split('/\s/', $banlist);
 
@@ -48,6 +66,7 @@ EOT;
         $text = $row['transcript'];
         $text = preg_replace('/\?|,|\./', '', $text);
         $words = explode(' ', $text);
+        $counted = array();
         foreach ($words as $word) {
             $word = strtolower($word);
             // Ignore words equal to or less than this length
@@ -62,12 +81,16 @@ EOT;
             if (in_array($word, $banlist)) {
                 continue;
             }
+            // Counted for this video
+            if (in_array($word, $counted)) {
+                continue;
+            }
             if (array_key_exists($word, $counts)) {
                 $counts[$word]++;
-                break;
             } else {
                 $counts[$word] = 1;
             }
+            array_push($counted, $word);
         }
     }
    
