@@ -2,7 +2,15 @@ var $ = e => document.querySelector(e);
 var $$ = e => [...document.querySelectorAll(e)];
 
 window.addEventListener('load', e => {
-    const UPDINT = 30;
+    let inputFirstTime = false;
+    $('#search-input').addEventListener('focus', e => {
+        if (!inputFirstTime) {
+            inputFirstTime = true
+            $('#search-input').value = '';
+        }
+    });
+    // Transparent overlays don't look great but might do something with them later
+    /*const UPDINT = 30;
     function getHeight(elt) {
         return elt.getBoundingClientRect().height + 'px';
     }
@@ -19,5 +27,5 @@ window.addEventListener('load', e => {
             requestAnimationFrame(e => updateHeisenberg(left-1, duration));
         }
     }
-    updateHeisenberg(360,360);
+    updateHeisenberg(360,360);*/
 });

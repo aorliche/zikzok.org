@@ -134,12 +134,9 @@ EOT;
 </head>
 <body>
 <div id='container'>
-    <h1><a href='/'>ZikZok</a></h1>
-    <div id='navigation'>
-        <a href='record/'>Record a video</a>
-        <a href='signup.php'>Sign up</a>
-        <a href='user.php?u=1'>Heisenberg's reserve</a>
-    </div>
+<?php
+    include('header.php');
+?>
     <h2>Top Videos</h2>
     <div id='top-videos'>
 <?php

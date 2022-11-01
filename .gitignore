@@ -5,6 +5,7 @@ errors.log
 */errors.log
 Hunimal2.token
 mysql.php
+wordcounts.json
 lib/*
 !lib/node_modules
 !lib/node_modules/@ffmpeg/core/dist/
