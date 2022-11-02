@@ -8,7 +8,7 @@
         $name = htmlentities($video['name']);
         $created = htmlspecialchars($video['created']);
         $views = $video['views'];
-        $likes = $video['likes'];
+        $likes = intval($video['likes'])+ord($name);
         $replies = $video['replies'];
         $comments = $video['comments'];
         $text = strtolower($video['transcript']);
