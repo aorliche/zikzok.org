@@ -19,6 +19,21 @@ window.addEventListener('load', e => {
 		videojs.log(msg);
 	});
 
+    player.on('loadeddata', e => {
+        let rect = $('#video-elt').getBoundingClientRect();
+        if (rect.width > 600) {
+            const h = rect.height*600/rect.width;
+            $('#video-elt').style.width = '600px';
+            $('#video-elt').style.height = h + 'px';
+        }
+        rect = $('#video-elt').getBoundingClientRect();
+        if (rect.height > 400) {
+            const w = rect.width*400/rect.height;
+            $('#video-elt').style.width = w + 'px';
+            $('#video-elt').style.height = '400px';
+        }
+    });
+
     player.on('play', e => {
         if (selected) {
             selected.classList.remove('selected');

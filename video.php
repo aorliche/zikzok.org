@@ -68,6 +68,23 @@
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $texts_res = $stmt->get_result();
+
+        // Load related videos
+        $stmt = $mysqli->prepare('select videos.uniqid, videos.name, connections.weight
+            from connections join videos 
+            on connections.uniqid2 = videos.uniqid 
+            where connections.uniqid1 = ? order by connections.weight desc');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $related_res = $stmt->get_result();
+
+        $top_related = array();
+        while ($row = $related_res->fetch_assoc()) {
+            array_push($top_related, $row);
+            if (count($top_related) == 4) {
+                break;
+            }
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -121,6 +138,24 @@
         <canvas width=80 height=80></canvas>
         <!-- Video's AlphaSong: <span id='alphasong'><?= getAlphasongFromId($id) ?></span> -->
     </div>
+    <div id='right'>
+        <h3>Related Videos</h3>
+<?php
+    foreach ($top_related as $row) {
+        $runiqid = $row['uniqid'];
+        $rname = $row['name'];
+        echo <<<EOT
+        <p>
+            <a href='/video.php?v=$runiqid'>
+                <div class='img-holder'><img src='/preview/$runiqid.png' alt='$rname'></div>
+                <strong>$rname</strong>
+            </a>
+        </p>
+EOT;
+    }
+?>
+    </div>
+    <div id='left'>
     <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
         Likes: <span id='likes'><?= $likes ?></span>
@@ -258,6 +293,7 @@
         <label for='end-time'>End:</label> <input type='range' id='end-time' min='0' max='100' step='1' value='100'><br>
         <a href='#close-editor' id='close-editor'>Close editor</a><br>
         <ol id='texts' class='hunimal-font'></ol>
+    </div>
     </div>
 </div>
 </body>

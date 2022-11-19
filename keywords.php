@@ -13,6 +13,7 @@
         if (in_array($word, $banlist)) {
             return false;
         }
+        return true;
     }
 
     // Score words based on length
