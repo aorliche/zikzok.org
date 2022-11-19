@@ -26,7 +26,7 @@ function get_keywords($text) {
     $text = preg_replace("/\?|,|'|\./", '', $text);
     $words = explode(' ', $text);
     $result = array();
-    for ($words as $word) {
+    foreach ($words as $word) {
         if (!valid_word($word, $banlist)) {
             continue;
         }
@@ -50,7 +50,7 @@ while ($row = $res->fetch_assoc()) {
     $uniqid = $row['uniqid'];
     $transcript = $row['transcript'];
     $words = get_keywords($transcript);
-    for ($words as $word) {
+    foreach ($words as $word) {
         arr2push($uniqid2words, $uniqid, $word);
         arr_add($wordcounts, $word);
     }
@@ -58,7 +58,7 @@ while ($row = $res->fetch_assoc()) {
 
 // Calculate weights
 $weights = array();
-for ($wordcounts as $word => $count) {
+foreach ($wordcounts as $word => $count) {
     if ($count > 1) {
         $weights[$word] = strlen($word)/$count;
     }
@@ -66,9 +66,9 @@ for ($wordcounts as $word => $count) {
 
 // Create keywords to uniqid map
 $word2uniqids = array();
-for ($keywords as $uniqid => $words) {
-    for ($words as $word) {
-        if (isset($kweights[$word])) {
+foreach ($keywords as $uniqid => $words) {
+    foreach ($words as $word) {
+        if (array_key_exists($word, $weights)) {
             arr2push($word2uniqids, $word, $uniqid);
         }
     }
@@ -76,7 +76,7 @@ for ($keywords as $uniqid => $words) {
 
 // Make connections between uniqids
 $conns = array();
-for ($word2uniqids as $word => $uniqids) {
+foreach ($word2uniqids as $word => $uniqids) {
     $len = count($uniqids);
     for ($i=0; $i<$len; $i++) {
         for ($j=0; $j<$len; $j++) {
