@@ -2,58 +2,9 @@
     // Build the keywords map
     include_once('mysql.php');
     include_once('keywords.php');
-
-	$banlist = <<<EOT
-then
-know
-make
-your
-don't
-that's
-what
-want
-like
-it's
-with
-just
-have
-this
-because
-that
-they
-them
-about
-from
-other
-there
-their
-some
-think
-okay
-right
-alright
-here's
-does
-let's
-when
-will
-things
-more
-something
-need
-thing
-well
-which
-also
-much
-here
-done
-well
-very
-little
-where
-these
-EOT;
+    
+    $banlist = file_get_contents('banlist.txt');
+    $banlist = preg_replace("'", '', $banlist);
 	$banlist = preg_split('/\s/', $banlist);
 
     $stmt = $mysqli->prepare('select transcript from transcripts');
@@ -64,21 +15,12 @@ EOT;
 
     while ($row = $res->fetch_assoc()) {
         $text = $row['transcript'];
-        $text = preg_replace('/\?|,|\./', '', $text);
+        $text = preg_replace("/\?|,|'|\./", '', $text);
         $words = explode(' ', $text);
         $counted = array();
         foreach ($words as $word) {
             $word = strtolower($word);
-            // Ignore words equal to or less than this length
-            if (strlen($word) < 4) {
-                continue;
-            }
-            // Ignore words that are greater than this length (David singing)
-            if (strlen($word) > 18) {
-                continue;
-            }
-            // Ignore words on the banlist
-            if (in_array($word, $banlist)) {
+            if (!valid_word($word, $banlist)) {
                 continue;
             }
             // Counted for this video

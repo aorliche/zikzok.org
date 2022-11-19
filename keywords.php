@@ -1,4 +1,20 @@
 <?php
+    // Ignore words
+    function valid_word($word, $banlist) {
+        // Ignore words equal to or less than this length
+        if (strlen($word) < 4) {
+            return false;
+        }
+        // Ignore words that are greater than this length (David singing)
+        if (strlen($word) > 18) {
+            return false;
+        }
+        // Ignore words on the banlist
+        if (in_array($word, $banlist)) {
+            return false;
+        }
+    }
+
     // Score words based on length
     // And penalize apostrophe words
     function scoreWord($word, $thresh=3, $gmult=0.2, $apopen=2) {
