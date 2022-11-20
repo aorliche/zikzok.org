@@ -70,7 +70,7 @@
         $texts_res = $stmt->get_result();
 
         // Load related videos
-        $stmt = $mysqli->prepare('select videos.uniqid, videos.name, connections.weight
+        $stmt = $mysqli->prepare('select videos.uniqid, videos.name, connections.weight, connections.words
             from connections join videos 
             on connections.uniqid2 = videos.uniqid 
             where connections.uniqid1 = ? order by connections.weight desc');
@@ -121,7 +121,9 @@
 </head>
 <body>
 <div id='container'>
-	<h1><a href='/'>ZikZok</a></h1>
+<?php
+    include('header.php');
+?>
 <?php
     if ($this_reply_res->num_rows) {
         $row = $this_reply_res->fetch_assoc();
@@ -130,6 +132,32 @@
         echo "<p>This is a reply to video <a href='/video.php?v=$olduniqid'>$oldname<img class='reply-thumb' src='/preview/$olduniqid.png'></a></p>";
     }
 ?>
+    <div id='right'>
+        <h3>Related Videos</h3>
+<?php
+    foreach ($top_related as $row) {
+        $runiqid = $row['uniqid'];
+        $rname = htmlentities($row['name']);
+        $rwords = explode(', ', $row['words']);
+        $rwords_text = array();
+        foreach ($rwords as $rword) {
+            $rword = htmlentities($rword);
+            $rword = "<a href='/search.php?w=$rword'>$rword</a>";
+            array_push($rwords_text, $rword);
+        }
+        $rwords_text = implode(', ', $rwords_text);
+        echo <<<EOT
+        <p>
+            <a href='/video.php?v=$runiqid'>
+                <strong>$rname</strong>
+                <div class='img-holder'><img src='/preview/$runiqid.png' alt='$rname'></div>
+            </a>
+            <div style='font-size: smaller;'>$rwords_text</div>
+        </p>
+EOT;
+    }
+?>
+    </div>
 	<div id='video-header'>
         <div id='video-title-info'>
             <div id='video-title'><?= htmlspecialchars($name)  ?></div>
@@ -137,23 +165,6 @@
         </div>
         <canvas width=80 height=80></canvas>
         <!-- Video's AlphaSong: <span id='alphasong'><?= getAlphasongFromId($id) ?></span> -->
-    </div>
-    <div id='right'>
-        <h3>Related Videos</h3>
-<?php
-    foreach ($top_related as $row) {
-        $runiqid = $row['uniqid'];
-        $rname = $row['name'];
-        echo <<<EOT
-        <p>
-            <a href='/video.php?v=$runiqid'>
-                <div class='img-holder'><img src='/preview/$runiqid.png' alt='$rname'></div>
-                <strong>$rname</strong>
-            </a>
-        </p>
-EOT;
-    }
-?>
     </div>
     <div id='left'>
     <div id='video-main'>

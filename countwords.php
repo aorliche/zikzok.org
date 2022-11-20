@@ -15,7 +15,7 @@
 
     while ($row = $res->fetch_assoc()) {
         $text = $row['transcript'];
-        $text = preg_replace("/\?|,|'|\./", '', $text);
+        $text = preg_replace("/\?|,|'|\.|-/", '', $text);
         $words = explode(' ', $text);
         $counted = array();
         foreach ($words as $word) {

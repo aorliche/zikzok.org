@@ -29,6 +29,10 @@
     max-height: 100px;
 }
 
+#like, #dislike, #disagree {
+    border: 1px solid red;
+}
+
 #editor {
     display: inline-block;
     width: 300px;
