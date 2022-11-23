@@ -4,7 +4,7 @@
     include_once('keywords.php');
     
     $banlist = file_get_contents('banlist.txt');
-    $banlist = preg_replace("'", '', $banlist);
+    $banlist = preg_replace("/'/", '', $banlist);
 	$banlist = preg_split('/\s/', $banlist);
 
     $stmt = $mysqli->prepare('select transcript from transcripts');

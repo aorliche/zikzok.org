@@ -36,7 +36,7 @@ window.addEventListener('load', e => {
     let words;
     const nwords = 8;
 
-    fetch('/wordcounts.json')
+    fetch('/wordcounts.json', {cache: 'no-store'})
     .then(res => res.json())
     .then(json => {
         const w = Object.keys(json);

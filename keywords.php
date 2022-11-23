@@ -32,6 +32,8 @@
         $counts = json_decode($counts_json, JSON_UNESCAPED_SLASHES);
         $scores = array(); 
         foreach ($counts as $word => $count) {
+            if ($count < 2) $count = 3;
+            if ($count > 10) $count = 5;
             $scores[$word] = scoreWord($word)*$count;
         }
         arsort($scores);
