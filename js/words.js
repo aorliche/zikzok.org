@@ -19,7 +19,9 @@ class Word {
     constructor(word, count) {
         this.word = word;
         this.count = count;
-        this.score = this.count*this.mult;
+        if (count < 2) count = 3;
+        if (count > 10) count = 5;
+        this.score = count*this.mult;
     }
 
     get mult() {
