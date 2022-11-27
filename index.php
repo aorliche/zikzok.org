@@ -1,5 +1,6 @@
 <?php
     include_once('mysql.php');
+    include_once('functions.php');
 
     $NTOP = 8;
     $NRECENT = 20;
@@ -69,7 +70,7 @@
         $name = htmlspecialchars($row['name']);
         $uniqid = htmlspecialchars($row['uniqid']);
         $created = htmlspecialchars($row['created']);
-        $likes = htmlspecialchars(intval($row['likes'])+ord($name));
+        $likes = likesToHunimal(intval($row['likes'])+ord($name));
         $nreplies = $row['nreplies'];
         $ncomments = $row['ncomments'];
         //$hscore = $row['hscore'] < 99 ? sprintf('%02d', $row['hscore']) : 99;
@@ -83,7 +84,7 @@ EOT;
             array_push($discussion, "$nreplies replies");
         } 
         if ($likes) {
-            array_push($discussion, "$likes likes");
+            array_push($discussion, "<span class='hunimal-font'>$likes</span> likes");
         }
         if ($ncomments) {
             array_push($discussion, "$ncomments comments");

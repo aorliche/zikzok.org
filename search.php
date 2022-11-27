@@ -31,7 +31,8 @@
             array_push($discussion, "$replies replies");
         } 
         if ($likes) {
-            array_push($discussion, "$likes likes");
+            $likes = likesToHunimal($likes);
+            array_push($discussion, "<span class='hunimal-font'>$likes</span> likes");
         }
         if ($views) {
             array_push($discussion, "$views views");

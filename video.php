@@ -169,7 +169,7 @@ EOT;
     <div id='left'>
     <div id='video-main'>
         Views: <span id='views'><?= $views ?></span>
-        Likes: <span id='likes'><?= $likes ?></span>
+        Likes: <span id='likes' class='hunimal-font'><?= likesToHunimal($likes) ?></span>
         <a href='/record/index.php?replyto=<?= $_GET['v'] ?>'>Reply</a>
         <a href='#like' id='like'>Like it<img src='/images/like.gif' height='32px'></a>
         <a href='#disagree' id='disagree'>Disagree<img src='/images/unsure.jpg' height='32px'></a>
