@@ -1,6 +1,7 @@
 <?php
     include_once('mysql.php');
     include_once('alphasongs.php');
+    include_once('functions.php');
 
     if ($_POST['name'] && $_POST['comment']) {
         $name = $_POST['name'];

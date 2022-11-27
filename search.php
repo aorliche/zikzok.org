@@ -1,5 +1,6 @@
 <?php
     include_once('mysql.php');
+    include_once('functions.php');
 
     $videos = array();
 

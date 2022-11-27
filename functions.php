@@ -12,7 +12,7 @@
             if ($digit < 10) {
                 $digit = "0$digit";
             }
-            $hun = "&#55$digit$hun"
+            $hun = "&#x55$digit;$hun";
             $likes = intval($likes/100);
         }
         return $hun;
