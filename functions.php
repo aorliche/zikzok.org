@@ -6,6 +6,9 @@
 	}
     
     function likesToHunimal($likes) {
+        if ($likes == 0) {
+            return "&#x5500";
+        }
         $hun = "";
         while ($likes > 0) {
             $digit = $likes % 100;

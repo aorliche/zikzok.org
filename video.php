@@ -23,7 +23,7 @@
         $name = $row['name'];
         $user = $row['userid'];
         $views = $row['views'];
-        $likes = intval($row['likes'])+ord($name);
+        $likes = intval($row['likes']);//+ord($name);
         $created = $row['created'];
         if (!$user) $user = 'Anonymous';
 

@@ -70,7 +70,7 @@
         $name = htmlspecialchars($row['name']);
         $uniqid = htmlspecialchars($row['uniqid']);
         $created = htmlspecialchars($row['created']);
-        $likes = likesToHunimal(intval($row['likes'])+ord($name));
+        $likes = $row['likes'] != 0 ? likesToHunimal(intval($row['likes'])) : false;//+ord($name));
         $nreplies = $row['nreplies'];
         $ncomments = $row['ncomments'];
         //$hscore = $row['hscore'] < 99 ? sprintf('%02d', $row['hscore']) : 99;
