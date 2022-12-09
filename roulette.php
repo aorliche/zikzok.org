@@ -140,7 +140,8 @@ $$('.roulette').forEach(r => {
         selected = spans[next+1];
         scrollTo(selected);
     }
-    setTimeout(() => scrollTo(selected), 0);
+    const rect = rn.getBoundingClientRect();
+    rn.scrollTo({behavior: 'smooth', left: selected.getBoundingClientRect().x-rect.x-12});
     rl.addEventListener('click', e => {
         action(e, 'left');
     });
