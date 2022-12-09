@@ -352,6 +352,7 @@ window.addEventListener('load', e => {
     
     $('#open-editor').addEventListener('click', e => {
         e.preventDefault();
+        $('#chars').style.display = 'none';
         $('#editor').style.visibility = 'visible';
         $('#display-overlay').checked = true;
         $('#display-overlay').dispatchEvent(new Event('change'));
@@ -359,6 +360,7 @@ window.addEventListener('load', e => {
 
     $('#close-editor').addEventListener('click', e => {
         e.preventDefault();
+        $('#chars').style.display = 'inline-block';
         $('#editor').style.visibility = 'hidden';
         $('#display-overlay').checked = false;
         $('#display-overlay').dispatchEvent(new Event('change'));

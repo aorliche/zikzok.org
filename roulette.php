@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<link rel="stylesheet" href="css/zikzok.css">
+<!--<!DOCTYPE html>
+<link rel="stylesheet" href="css/zikzok.css">-->
 <style>
 #chars {
-    width: 280px;
+    width: 180px;
     font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
 }
 .char > span:first-child {
     display: inline-block;
-    width: 120px;
+    width: 90px;
 }
 .roulette {
     display: inline-block;
-    width: 142px;
 }
 .roulette > div {
     display: inline-block;
@@ -33,6 +34,18 @@
 .invisible {
     color: rgba(0,0,0,0);
 }
+.pink, .yellow, .green {
+    border-radius: 5px;
+}
+.pink {
+    background-color: #f66;
+}
+.yellow {
+    background-color: #ff6;
+}
+.green {
+    background-color: #6f6;
+}
 </style>
 
 <template id='roulette'>
@@ -44,18 +57,19 @@
 </template>
 
 <div id='chars'>
-    <div class='char' data-name='Algorithm'></div>
+    <h3>Video Characteristics</h3>
+    <div class='char' data-name='Algorithmicity'></div>
     <div class='char' data-name='Connecitivity'></div>
     <div class='char' data-name='Delta-V'></div>
     <div class='char' data-name='Entropy'></div>
-    <div class='char' data-name='Hive'></div>
+    <div class='char' data-name='Height'></div>
     <div class='char' data-name='Kismet'></div>
     <div class='char' data-name='Monkey Island'></div>
-    <div class='char' data-name='Porkus'></div>
+    <div class='char' data-name='Pork'></div>
     <div class='char' data-name='Singularity'></div>
-    <div class='char' data-name='Tian'></div>
+    <div class='char' data-name='Wu'></div>
     <div class='char' data-name='Wavelength'></div>
-    <div class='char' data-name='Zorro'></div>
+    <div class='char' data-name='Zero Crossings'></div>
 </div>
 
 <script>
@@ -101,6 +115,13 @@ $$('.roulette').forEach(r => {
         span.innerText = decToHun(i);
         span.dataset.num = i;
         span.classList.add('hunimal-font');
+        if (i < 3) {
+            span.classList.add('pink');
+        } else if (i < 7) {
+            span.classList.add('yellow');
+        } else {
+            span.classList.add('green');
+        }
         rn.appendChild(span);
         spans.push(span);
     }
@@ -108,7 +129,7 @@ $$('.roulette').forEach(r => {
     spans.push(makeSpace());
     rn.appendChild(spans.at(-1));
     function scrollTo(span) {
-        span.scrollIntoView({behavior: 'smooth', inline: 'center'});
+        span.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'});
     }
     function action(e, lr) {
         e.preventDefault();

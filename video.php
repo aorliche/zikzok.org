@@ -206,6 +206,7 @@ EOT;
                 <source src='<?= $video ?>'>
             </video>
         </div>
+        <?php include('roulette.php'); ?>
 <?php
     if ($likes_res->num_rows) {
         echo <<<EOT
