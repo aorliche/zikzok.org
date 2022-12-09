@@ -58,10 +58,10 @@
 
 <div id='chars'>
     <h3>Video Characteristics</h3>
-    <div class='char' data-name='Algorithmicity'></div>
     <div class='char' data-name='Connecitivity'></div>
     <div class='char' data-name='Delta-V'></div>
     <div class='char' data-name='Entropy'></div>
+    <div class='char' data-name='Fairness'></div>
     <div class='char' data-name='Height'></div>
     <div class='char' data-name='Kismet'></div>
     <div class='char' data-name='Monkey Island'></div>
