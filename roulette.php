@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="css/zikzok.css">-->
 <style>
 #chars {
-    width: 180px;
+    width: 200px;
     font-size: 12px;
     display: inline-block;
     vertical-align: top;

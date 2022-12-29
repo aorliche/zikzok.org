@@ -19,6 +19,12 @@ window.addEventListener('load', e => {
 		videojs.log(msg);
 	});
 
+    // Split video
+    /*$('#split-button').addEventListener('click', e => {
+        e.preventDefault();
+        const ctime = player.currentTime;
+    });*/
+
     player.on('loadeddata', e => {
         let rect = $('#video-elt').getBoundingClientRect();
         if (rect.width > 600) {

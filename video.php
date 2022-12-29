@@ -207,6 +207,8 @@ EOT;
             </video>
         </div>
         <?php include('roulette.php'); ?>
+        <br>
+        <?php include('split.php'); ?>
 <?php
     if ($likes_res->num_rows) {
         echo <<<EOT
