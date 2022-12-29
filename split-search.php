@@ -3,7 +3,7 @@
 
     $query = $_GET['q'];
 
-    $stmt = mysqli->prepare('select 
+    $stmt = $mysqli->prepare('select 
         videos.name,
         videos.uniqid,
         timing.chunk_text,
@@ -11,22 +11,21 @@
         from timing join videos 
         on timing.uniqid = videos.uniqid 
         where match(timing.chunk_text) against(?) 
-        order by relevance desc limit 8');
+        order by relevance desc limit 5');
     $stmt->bind_param('ss', $query, $query);
     $stmt->execute();
     $res = $stmt->get_result();
 
     while ($row = $res->fetch_assoc()) {
-        $name = $row['name'];
-        $uniqid = $row['uniqid'];
-        $text = $row['chunk_text'];
+        $name = htmlentities($row['name']);
+        $uniqid = htmlentities($row['uniqid']);
+        $text = htmlentities($row['chunk_text']);
         $str = <<<EOT
-            <div class='split-result'>
-                <img src='preview/$uniqid.png'>
-                <div style='display: inline-block;'>
-                    <h4>$name</h4>
-                    $text
-                </div>
+            <div class='split-result' style='clear: both'>
+                <img src='preview/$uniqid.png' style='float: left; padding-right: 5px;' height='80px'>
+                <h4>$name</h4>
+                $text<br>
+                <a href='#'>Split!</a>
             </div>
 EOT;
         echo $str;

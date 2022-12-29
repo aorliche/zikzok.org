@@ -1,6 +1,6 @@
 <style>
 #split {
-    width: 200px;
+    width: 400px;
     font-size: 12px;
     display: inline-block;
     vertical-align: top;
@@ -13,9 +13,7 @@
     <h3>Split</h3>
     <textarea id='split-search-area'>Type search text here</textarea>
     <button id='split-search-button'>Find Now</button>
-    <div id='splits-results'>
-    </div>
-    <button id='split-button'>Split</button>
+    <div id='split-results'></div>
 </div>
 <script>
 $('#split-search-button').addEventListener('click', e => {
@@ -31,7 +29,7 @@ $('#split-search-button').addEventListener('click', e => {
     })
     .catch(err => {
         results.innerText = err;
-        console.log(err));
+        console.log(err);
     });
 });
 $('#split-button').addEventListener('click', e => {
