@@ -32,7 +32,4 @@ $('#split-search-button').addEventListener('click', e => {
         console.log(err);
     });
 });
-$('#split-button').addEventListener('click', e => {
-    e.preventDefault();
-});
 </script>

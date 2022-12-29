@@ -25,7 +25,7 @@
                 <img src='preview/$uniqid.png' style='float: left; padding-right: 5px;' height='80px'>
                 <h4>$name</h4>
                 $text<br>
-                <a href='#'>Split!</a>
+                <a href='#' onclick='event.preventDefault()'>Split!</a>
             </div>
 EOT;
         echo $str;
