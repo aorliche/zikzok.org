@@ -1,5 +1,6 @@
 var $ = e => document.querySelector(e);
 var $$ = e => document.querySelectorAll(e);
+var pvar;
 
 window.addEventListener('load', e => {
 	/*let options = {
@@ -18,6 +19,7 @@ window.addEventListener('load', e => {
 		const msg = 'Using video.js ' + videojs.VERSION;
 		videojs.log(msg);
 	});
+    pvar = player;
 
     // Split video
     /*$('#split-button').addEventListener('click', e => {

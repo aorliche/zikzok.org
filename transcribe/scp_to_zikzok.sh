@@ -13,6 +13,7 @@ for uniqidext in $(bash getvideonames.sh "$1"); do
         if ! [[ "$havetxt" =~ "$uniqidext.txt" ]]; then
             echo "Uploading  $uniqidext.txt"
             sshpass -p "$1" scp "tmpvideos/$uniqidext.txt" zikzok72@zikzok.org:~/public_html/transcribe/tmpvideos
+            sshpass -p "$1" scp "tmpvideos/$uniqidext.srt" zikzok72@zikzok.org:~/public_html/transcribe/timing
         fi
     fi
 done

@@ -6,7 +6,6 @@ fi
 
 badlist="62f85cc96c26e.webm 62f85cc96c2e2.webm 62f85cc96cc8d.mp4 62f85cc96cce3.webm 639885144f9e5.mp4"
 
-
 for uniqidext in $(bash getvideonames.sh "$1"); do
     if [ -z $(find tmpvideos -type f -name "$uniqidext.txt") ]; then
         if [[ "$badlist" =~ "$uniqidext" ]]; then

@@ -205,10 +205,18 @@ EOT;
             <video id='video-elt' class='video-js' controls playsinline>
                 <source src='<?= $video ?>'>
             </video>
+            <br>
+            <button id='split-button'>Split Video</button>
+<script>
+$('#split-button').addEventListener('click', e => {
+    e.preventDefault();
+    const t = pvar.currentTime;
+    window.location.href = `/video-split.php?v=<?= $_GET['v'] ?>&t=${t}`;
+});
+</script>
         </div>
         <?php include('roulette.php'); ?>
         <br>
-        <?php include('split.php'); ?>
 <?php
     if ($likes_res->num_rows) {
         echo <<<EOT
