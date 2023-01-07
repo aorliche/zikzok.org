@@ -207,13 +207,8 @@ EOT;
             </video>
             <br>
             <button id='split-button'>Split Video</button>
-<script>
-$('#split-button').addEventListener('click', e => {
-    e.preventDefault();
-    const t = pvar.currentTime;
-    window.location.href = `/video-split.php?v=<?= $_GET['v'] ?>&t=${t}`;
-});
-</script>
+            <div id='split-uniqid' style='display: none;'><?= $_GET['v'] ?></div>
+            <br>
         </div>
         <?php include('roulette.php'); ?>
         <br>

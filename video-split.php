@@ -70,14 +70,13 @@
         <video id='video-elt-1' class='video-js' controls playsinline>
             <source src='<?= $video ?>'>
         </video>
-        <textarea>
-        These two videos are connected because...
+        <textarea style='width: 400px; height: 80px;'>These two videos are connected because...
         </textarea>
         <button id='post-split-button'>Finished</button>
         <video id='video-elt-2' class='video-js' controls playsinline>
             <source src='<?= $video ?>'>
         </video>
-        <div id='my-time'><?= $_GET['t'] ?></div>
+        <div id='time-elt' style='display: none;'><?= $_GET['t'] ?></div>
     </div>
 </div>
 </body>
