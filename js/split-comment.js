@@ -10,6 +10,10 @@ window.addEventListener('load', e => {
                 ee.preventDefault();
                 const sel = a.parentElement.querySelector('.split-select');
                 sel.style.display = 'inline-block';
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.innerText = 'Select a video';
+                sel.appendChild(opt);
                 for (let i=0; i<json.length; i++) {
                     const opt = document.createElement('option');
                     opt.value = json[i].uniqid;
