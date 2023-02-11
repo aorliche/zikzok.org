@@ -11,7 +11,7 @@ window.addEventListener('load', e => {
                 const sel = a.parentElement.querySelector('.split-select');
                 sel.style.display = 'inline-block';
                 const opt = document.createElement('option');
-                opt.value = '';
+                opt.value = 'none';
                 opt.innerText = 'Select a video';
                 sel.appendChild(opt);
                 for (let i=0; i<json.length; i++) {
