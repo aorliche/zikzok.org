@@ -50,9 +50,10 @@
         $replies_res = $stmt->get_result();
 
         // Get comments
-        $stmt = $mysqli->prepare('select name, comment, created, 
+        $stmt = $mysqli->prepare('select comments.id, name, comment, created, comment_splits.uniqid as other, 
                             unix_timestamp(created) as created_unix from comments
-                            where uniqid = ? order by created desc');
+                            left join comment_splits on comments.id = comment_splits.cid
+                            where comments.uniqid = ? order by created desc');
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $comments_res = $stmt->get_result();
@@ -119,6 +120,7 @@
 <script src='/js/video.js'></script>
 <script src='/js/video_msp.js'></script>
 <script src='/js/comments.js'></script>
+<script src='/js/split-comment.js'></script>
 </head>
 <body>
 <div id='container'>
@@ -263,7 +265,13 @@ EOT;
         $name = htmlspecialchars($row['name']);
         $comment = htmlspecialchars($row['comment']);
         $created = htmlspecialchars($row['created']);
-        echo "<li><strong>$name</strong> on $created: $comment</li>";
+        $uniqid = htmlspecialchars($_GET['v']);
+        $other = htmlspecialchars($row['other']);
+        $cid = htmlspecialchars($row['id']);
+        if ($other) {
+            $other = "[Split By:] <a href='/video.php?v=$other'><img src='/preview/$other.png' width='100'></a>";
+        }
+        echo "<li><strong>$name</strong> on $created: $comment $other <a class='split-link' href='#' data-video='$uniqid' data-comment='$cid'>Split</a> <select class='split-select'></select></li>";
     }
     if ($comments_res->num_rows) {
         echo "</ol>";
