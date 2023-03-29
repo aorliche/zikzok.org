@@ -22,7 +22,7 @@ window.addEventListener('load', e => {
                 wordFeedback.innerText = commentText[0];
                 wordInp.addEventListener('input', eee => {
                     wordFeedback.innerText = commentText[wordInp.value];
-                    before = commentText.slice(0, parseInt(wordInp.value)+1);
+                    before = commentText.slice(0, parseInt(wordInp.value));
                     after = commentText.slice(wordInp.value);
                 });
                 // Select split video
@@ -43,7 +43,7 @@ window.addEventListener('load', e => {
                     console.log(a.dataset.video);
                     console.log(a.dataset.comment);*/
                     const vid = sel.options[sel.selectedIndex].value;
-                    fetch(`/split-comment.php?c=${a.dataset.comment}&v=${vid}&before=${encodeURIComponent(before)}&after=${encodeURIComponent(after)}`)
+                    fetch(`/split-comment.php?c=${a.dataset.comment}&v=${vid}&before=${encodeURIComponent(before.join(' '))}&after=${encodeURIComponent(after.join(' '))}`)
                     .then(resp => resp.text())
                     .then(text => {
                         if (text != 'OK') {
