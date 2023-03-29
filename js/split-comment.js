@@ -22,7 +22,7 @@ window.addEventListener('load', e => {
                 wordFeedback.innerText = commentText[0];
                 wordInp.addEventListener('input', eee => {
                     wordFeedback.innerText = commentText[wordInp.value];
-                    before = commentText.slice(0, wordInp.value+1);
+                    before = commentText.slice(0, parseInt(wordInp.value)+1);
                     after = commentText.slice(wordInp.value);
                 });
                 // Select split video
