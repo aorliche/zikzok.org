@@ -58,7 +58,7 @@
         $comments_res = $stmt->get_result();
 
         // Get comment splits
-        $stmt = $mysqli->prepare('select id, `before`, uniqid, `after`, split_which,
+        $stmt = $mysqli->prepare('select comment_splits.id, `before`, comment_splits.uniqid, `after`, split_which,
                             left join comments on comments.id = split_which
                             where comments.uniqid = ?');
         $stmt->bind_param('s', $_GET['v']);
