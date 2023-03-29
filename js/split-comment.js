@@ -8,11 +8,13 @@ window.addEventListener('load', e => {
         $$('.split-link').forEach(a => {
             a.addEventListener('click', ee => {
                 ee.preventDefault();
+                // Select split word
                 const comment = $(`#comment-${a.dataset.comment}`).innerText;
                 const wordPrompt = a.parentElement.querySelector('.split-word-prompt');
                 const wordInp = a.parentElement.querySelector('.split-word-input');
                 const wordFeedback = a.parentElement.querySelector('.split-word-feedback');
                 const commentText = comment.split(/\s+/);
+                let before, after;
                 wordPrompt.style.display = 'inline';
                 wordInp.style.display = 'inline-block';
                 wordFeedback.style.display = 'inline';
@@ -20,7 +22,10 @@ window.addEventListener('load', e => {
                 wordFeedback.innerText = commentText[0];
                 wordInp.addEventListener('input', eee => {
                     wordFeedback.innerText = commentText[wordInp.value];
+                    before = commentText.slice(0, wordInp.value+1);
+                    after = commentText.slice(wordInp.value);
                 });
+                // Select split video
                 const sel = a.parentElement.querySelector('.split-select');
                 sel.style.display = 'inline-block';
                 const opt = document.createElement('option');
@@ -38,7 +43,7 @@ window.addEventListener('load', e => {
                     console.log(a.dataset.video);
                     console.log(a.dataset.comment);*/
                     const vid = sel.options[sel.selectedIndex].value;
-                    fetch(`/split-comment.php?c=${a.dataset.comment}&v=${vid}&before=${before}&after=${after}`)
+                    fetch(`/split-comment.php?c=${a.dataset.comment}&v=${vid}&before=${encodeURIComponent(before)}&after=${encodeURIComponent(after)}`)
                     .then(resp => resp.text())
                     .then(text => {
                         if (text != 'OK') {
