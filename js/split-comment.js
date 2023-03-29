@@ -19,7 +19,7 @@ window.addEventListener('load', e => {
                 wordInp.max = commentText.length-1;
                 wordFeedback.innerText = commentText[0];
                 wordInp.addEventListener('change', eee => {
-                    wordFeedback = commentText[wordInp.value];
+                    wordFeedback.innerText = commentText[wordInp.value];
                 });
                 const sel = a.parentElement.querySelector('.split-select');
                 sel.style.display = 'inline-block';

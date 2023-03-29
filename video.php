@@ -288,7 +288,10 @@ EOT;
             echo "<li><strong>$name</strong> on $created: $before... <ul><li><a href='/video.php?v=$middle'><img src='/preview/$middle.png' width='100'></a></li></ul> ...$after";
         } else {
             echo "<li><strong>$name</strong> on $created: <span id='comment-$cid'>$comment</span> <a class='split-link' href='#' data-video='$uniqid' data-comment='$cid'>Split</a>
-                <span class='split-word-prompt'>Select word to split on:</span> <input type='range' min='0' max='0' value='0' class='split-word-input'> <span class='split-word-feedback'></span> <select class='split-select'></select></li>";
+                <span class='hidden split-word-prompt'>Select word to split on:</span> 
+                <input class='hidden split-word-input' type='range' min='0' max='0' value='0'> 
+                <span class='hidden split-word-feedback'></span> 
+                <select class='hidden split-select'></select></li>";
         }
         /*if ($other) {
             $other = "[Split By:] ";
