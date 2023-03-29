@@ -13,12 +13,12 @@ window.addEventListener('load', e => {
                 const wordInp = a.parentElement.querySelector('.split-word-input');
                 const wordFeedback = a.parentElement.querySelector('.split-word-feedback');
                 const commentText = comment.split(/\s+/);
-                wordFeedback.style.display = 'inline';
+                wordPrompt.style.display = 'inline';
                 wordInp.style.display = 'inline-block';
                 wordFeedback.style.display = 'inline';
                 wordInp.max = commentText.length-1;
                 wordFeedback.innerText = commentText[0];
-                wordInp.addEventListener('change', eee => {
+                wordInp.addEventListener('input', eee => {
                     wordFeedback.innerText = commentText[wordInp.value];
                 });
                 const sel = a.parentElement.querySelector('.split-select');
