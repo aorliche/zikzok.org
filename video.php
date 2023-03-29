@@ -50,13 +50,26 @@
         $replies_res = $stmt->get_result();
 
         // Get comments
-        $stmt = $mysqli->prepare('select comments.id, name, comment, created, comment_splits.uniqid as other, 
+        $stmt = $mysqli->prepare('select comments.id, name, comment, created, 
                             unix_timestamp(created) as created_unix from comments
-                            left join comment_splits on comments.id = comment_splits.cid
                             where comments.uniqid = ? order by created desc');
         $stmt->bind_param('s', $_GET['v']);
         $stmt->execute();
         $comments_res = $stmt->get_result();
+
+        // Get comment splits
+        $stmt = $mysqli->prepare('select id, `before`, uniqid, `after`, split_which,
+                            left join comments on comments.id = split_which
+                            where comments.uniqid = ?');
+        $stmt->bind_param('s', $_GET['v']);
+        $stmt->execute();
+        $splits_res = $stmt->get_result();
+
+        // Make map from comment to split for lookup later
+        $split_map = array();
+        while ($row = $splits_res->fetch_assoc()) {
+            $split_map[$row['split_which']] = $row;
+        }
 
         // Get likes
         $stmt = $mysqli->prepare('select * from likes left join users on likes.userid = users.id
@@ -266,12 +279,20 @@ EOT;
         $comment = htmlspecialchars($row['comment']);
         $created = htmlspecialchars($row['created']);
         $uniqid = htmlspecialchars($_GET['v']);
-        $other = htmlspecialchars($row['other']);
         $cid = htmlspecialchars($row['id']);
-        if ($other) {
-            $other = "[Split By:] <a href='/video.php?v=$other'><img src='/preview/$other.png' width='100'></a>";
+        if (array_key_exists($cid, $split_map)) {
+            $split_row = $split_map[$cid];
+            $before = htmlspecialchars($split_row['before']);
+            $middle = htmlspecialchars($split_row['uniqid']);
+            $after = htmlspecialchars($split_row['after']);
+            echo "<li><strong>$name</strong> on $created: $before... <ul><li><a href='/video.php?v=$middle'><img src='/preview/$middle.png' width='100'></a></li></ul> ...$after";
+        } else {
+            echo "<li><strong>$name</strong> on $created: <span id='comment-$cid'>$comment</span> <a class='split-link' href='#' data-video='$uniqid' data-comment='$cid'>Split</a>
+                <span class='split-word-prompt'>Select word to split on:</span> <input type='range' min='0' max='0' value='0' class='split-input'> <span class='split-word-feedback'></span> <select class='split-select'></li>";
         }
-        echo "<li><strong>$name</strong> on $created: $comment $other <a class='split-link' href='#' data-video='$uniqid' data-comment='$cid'>Split</a> <select class='split-select'></select></li>";
+        /*if ($other) {
+            $other = "[Split By:] ";
+        }*/
     }
     if ($comments_res->num_rows) {
         echo "</ol>";
