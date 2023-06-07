@@ -58,7 +58,7 @@
 
 <div id='chars'>
     <h3>Video Characteristics</h3>
-    <div class='char' data-name='Connecitivity'></div>
+    <div class='char' data-name='Connectivity'></div>
     <div class='char' data-name='Delta-V'></div>
     <div class='char' data-name='Entropy'></div>
     <div class='char' data-name='Fairness'></div>
