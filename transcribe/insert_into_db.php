@@ -26,11 +26,14 @@
     $wanted = array();
     $have = array();
     while ($row = $res->fetch_assoc()) {
-        $bname = $row['uniqid'] . '.' . $row['ext'] . '.txt';
+        // Format of whisper changed?
+        //$bname = $row['uniqid'] . '.' . $row['ext'] . '.txt';
+        $bname = $row['uniqid'] . '.txt';
         if ($row['id']) {
             array_push($have, $bname);
         } else {
             array_push($wanted, $bname);
+            echo "$bname\n";
         }
     }
 
