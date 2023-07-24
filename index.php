@@ -5,6 +5,16 @@
     $NTOP = 8;
     $NRECENT = 20;
 
+    // Get deleted videos
+    $stmt = $mysqli->prepare('select uniqid from deleted');
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $deleted = array();
+
+    while ($row = $res->fetch_assoc()) {
+        array_push($deleted, $row['uniqid']);
+    }
+
     // Get videos + number replies
     $stmt = $mysqli->prepare('select uniqid,name,likes,created,unix_timestamp(created) as created_unix,count(newvideo) as nreplies from videos 
         left join replies on videos.uniqid = replies.oldvideo 
@@ -26,6 +36,10 @@
     while ($row = $res->fetch_assoc()) {
         // Get number of comments for each video
         $uniqid = $row['uniqid'];
+        // Skip deleted videos
+        if (in_array($uniqid, $deleted)) {
+            continue;
+        }
         $stmt = $mysqli->prepare('select uniqid,count(id) as ncomments from comments where uniqid = ? group by uniqid order by created desc');
         $stmt->bind_param('s', $uniqid);
         $stmt->execute();
