@@ -7,7 +7,7 @@
     $NCOMMENTS = 5;
 
     // Get latest comments
-    $stmt = $mysqli->prepare('select comments.uniqid, comments.name, comments.comment, videos.name from comments 
+    $stmt = $mysqli->prepare('select comments.uniqid, comments.name as cname, comments.comment as comment, videos.name as vname from comments 
         left join videos on comments.uniqid = videos.uniqid order by comments.id desc limit 5');
     $stmt->execute();
     $res = $stmt->get_result();
@@ -169,12 +169,13 @@ EOT;
     <ul id='latest-comments'>
 <?php
     foreach ($latest_comments as $row) {
-        $cname = htmlspecialchars($row['comments.name']);
-        $vname = htmlspecialchars($row['videos.name']);
+        $cname = htmlspecialchars($row['cname']);
+        $vname = htmlspecialchars($row['vname']);
         $uniqid = htmlspecialchars($row['uniqid']);
-        $comment = htmlspecialchars($row['comments.comment']);
+        $comment = htmlspecialchars($row['comment']);
         echo <<<EOT
         <li>$cname on <a href="video.php?v=$uniqid"><b>$vname</b></a>: $comment</li>
+
 EOT;
     }
 ?>
