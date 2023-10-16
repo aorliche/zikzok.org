@@ -4,6 +4,19 @@
 
     $NTOP = 8;
     $NRECENT = 20;
+    $NCOMMENTS = 5;
+
+    // Get latest comments
+    $stmt = $mysqli->prepare('select comments.uniqid, comments.name, comments.comment, videos.name from comments 
+        left join videos on comments.uniqid = videos.uniqid order by comments.id desc limit 5');
+    $stmt->execute();
+    $res = $stmt->get_result();
+
+    $latest_comments = array();
+
+    while ($row = $res->fetch_assoc()) {
+        array_push($latest_comments, $row);
+    }
 
     // Get deleted videos
     $stmt = $mysqli->prepare('select uniqid from deleted');
@@ -152,6 +165,20 @@ EOT;
 <?php
     include('header.php');
 ?>
+    <h2>Latest Comments</h2>
+    <ul id='latest-comments'>
+<?php
+    foreach ($latest_comments as $row) {
+        $cname = htmlspecialchars($row['comments.name']);
+        $vname = htmlspecialchars($row['videos.name']);
+        $uniqid = htmlspecialchars($row['uniqid']);
+        $comment = htmlspecialchars($row['comments.comment']);
+        echo <<<EOT
+        <li>$cname on <a href="video.php?v=$uniqid"><b>$vname</b></a>: $comment</li>
+EOT;
+    }
+?>
+    </ul>
     <h2>Top Videos</h2>
     <div id='top-videos'>
 <?php
