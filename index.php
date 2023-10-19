@@ -173,8 +173,8 @@ EOT;
         $vname = htmlspecialchars($row['vname']);
         $uniqid = htmlspecialchars($row['uniqid']);
         $comment = $row['comment'];
-        if (strlen($comment) > 100) {
-            $comment = substr($comment, 0, 100) + '...';
+        if (strlen($comment) > 200) {
+            $comment = substr($comment, 0, 200) . '...';
         }
         $comment = htmlspecialchars($comment);
         echo <<<EOT
