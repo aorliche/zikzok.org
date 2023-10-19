@@ -8,7 +8,7 @@
 
     // Get latest comments
     $stmt = $mysqli->prepare('select comments.uniqid, comments.name as cname, comments.comment as comment, videos.name as vname from comments 
-        left join videos on comments.uniqid = videos.uniqid order by comments.id desc limit 5');
+        left join videos on comments.uniqid = videos.uniqid order by comments.id desc limit 4');
     $stmt->execute();
     $res = $stmt->get_result();
 
@@ -172,7 +172,10 @@ EOT;
         $cname = htmlspecialchars($row['cname']);
         $vname = htmlspecialchars($row['vname']);
         $uniqid = htmlspecialchars($row['uniqid']);
-        $comment = htmlspecialchars($row['comment']);
+        $comment = $row['comment'];
+        if strlen($comment) > 100:
+            $comment = substr($comment, 0, 100) + '...';
+        $comment = htmlspecialchars($comment);
         echo <<<EOT
         <li>$cname on <a href="video.php?v=$uniqid"><b>$vname</b></a>: $comment</li>
 
