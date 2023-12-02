@@ -258,6 +258,8 @@ EOT;
         </div>
         EOT;
     }
+    // No Spiral tesselative boards comments
+    if ($_GET['v'] != '651d7820e026c') {
 ?>
         <h4>Make a comment</h4>
         <form id='comment-form' method='post' action='/video.php?v=<?= $_GET['v'] ?>'>
@@ -269,6 +271,7 @@ EOT;
         </form>
         <div id='comments'>
 <?php
+    }
     if ($comments_res->num_rows) {
         $n = $comments_res->num_rows;
         echo "Comments: ($n)<br>";
