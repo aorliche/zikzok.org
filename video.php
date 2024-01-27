@@ -247,7 +247,7 @@ EOT;
                     $display .= ' (AI)';
                 }
             } else {
-                $display = $ip;
+                $display = 'xxx.xxx.xxx.xxx'; //$ip;
             }
             echo <<<EOT
                 <li>$display ($when) $type</li>
