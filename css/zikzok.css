@@ -13,6 +13,10 @@
 	width: 80%;
 }
 
+body {
+    font-family: "HunimalSansv1.5", sans-serif;
+}
+
 .video-block {
 	display: inline-block;
 	margin-right: 10px;
